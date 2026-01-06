@@ -2,25 +2,25 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Radio Mundo</title>
+<title>Radio Arturo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Tailwind CDN -->
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        bg: "#020617",
-        accent: "#22d3ee"
+  theme:{
+    extend:{
+      colors:{
+        bg:"#020617",
+        accent:"#22d3ee"
       }
     }
   }
 }
 </script>
 
-<!-- Phosphor Icons -->
+<!-- Icons -->
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
 <!-- React -->
@@ -31,10 +31,10 @@ tailwind.config = {
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <style>
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background:#020617; }
-::-webkit-scrollbar-thumb { background:#155e75; border-radius:6px; }
-::-webkit-scrollbar-thumb:hover { background:#22d3ee; }
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#020617}
+::-webkit-scrollbar-thumb{background:#155e75;border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#22d3ee}
 </style>
 </head>
 
@@ -42,51 +42,44 @@ tailwind.config = {
 <div id="root"></div>
 
 <script type="text/babel">
+const {useState,useEffect,useRef}=React;
 
-const {useState, useEffect, useRef} = React;
+const COUNT_API_KEY="ut_wrbgRkczfbovlvAS0v4umgmKBpnP7Cu3e7YpXPm0";
 
 function App(){
-
 const [stations,setStations]=useState([])
-const [country,setCountry]=useState("")
-const [search,setSearch]=useState("")
 const [current,setCurrent]=useState(null)
 const [playing,setPlaying]=useState(false)
-const [sidebar,setSidebar]=useState(false)
+const [search,setSearch]=useState("")
+const [open,setOpen]=useState(false)
 const audioRef=useRef(null)
 const canvasRef=useRef(null)
 
-useEffect(()=>{loadTop()},[])
+useEffect(()=>{loadMexicoTop()},[])
 
-async function loadTop(){
- try{
-  const r=await fetch("https://de1.api.radio-browser.info/json/stations/topclick/50")
-  const d=await r.json()
-  setStations(d)
- }catch{}
+async function loadMexicoTop(){
+ const r=await fetch("https://de1.api.radio-browser.info/json/stations/topclick/100")
+ const d=await r.json()
+ setStations(d.filter(s=>s.country==="Mexico"))
 }
 
 async function loadCountry(c){
- try{
-  const r=await fetch(`https://de1.api.radio-browser.info/json/stations/bycountry/${c}`)
-  const d=await r.json()
-  setStations(d)
- }catch{}
+ const r=await fetch("https://de1.api.radio-browser.info/json/stations/bycountry/"+c)
+ const d=await r.json()
+ setStations(d)
+ setOpen(false)
 }
 
-async function searchStation(q){
- try{
-  const r=await fetch(`https://de1.api.radio-browser.info/json/stations/search?name=${q}`)
-  const d=await r.json()
-  setStations(d)
- }catch{}
+async function searchRadio(){
+ const r=await fetch("https://de1.api.radio-browser.info/json/stations/search?name="+search)
+ const d=await r.json()
+ setStations(d.filter(s=>["Mexico","Venezuela"].includes(s.country)))
 }
 
 useEffect(()=>{
- if(!audioRef.current) return
- const audio=audioRef.current
+ if(!audioRef.current || !canvasRef.current) return
  const ctx=new AudioContext()
- const src=ctx.createMediaElementSource(audio)
+ const src=ctx.createMediaElementSource(audioRef.current)
  const analyser=ctx.createAnalyser()
  src.connect(analyser)
  analyser.connect(ctx.destination)
@@ -99,70 +92,77 @@ useEffect(()=>{
   requestAnimationFrame(draw)
   analyser.getByteFrequencyData(buffer)
   c.clearRect(0,0,canvas.width,canvas.height)
-  const barW=canvas.width/buffer.length
+  const w=canvas.width/buffer.length
   buffer.forEach((v,i)=>{
    const h=v/255*canvas.height
    c.fillStyle="#22d3ee"
-   c.fillRect(i*barW,canvas.height-h,barW-2,h)
+   c.fillRect(i*w,canvas.height-h,w-2,h)
   })
  }
  draw()
 },[current])
 
 useEffect(()=>{
- let key=location.hostname.replace(/\./g,"_")
- fetch(`https://api.countapi.xyz/hit/radiomundo/${key}`).then(r=>r.json()).then(d=>{
-   localStorage.setItem("visits",d.value)
- }).catch(()=>{
-   let v=localStorage.getItem("visits")||0
-   v++
-   localStorage.setItem("visits",v)
- })
+ try{
+  const key=location.hostname.replace(/\./g,"_")
+  fetch(`https://api.countapi.xyz/hit/${ut_wrbgRkczfbovlvAS0v4umgmKBpnP7Cu3e7YpXPm0}/${key}`)
+  .then(r=>r.json())
+  .then(d=>localStorage.setItem("visits",d.value))
+ }catch{
+  let v=localStorage.getItem("visits")||0
+  localStorage.setItem("visits",++v)
+ }
 },[])
 
 return(
 <div className="flex h-screen">
 
 {/* Sidebar */}
-<div className={`bg-slate-900 w-64 p-4 fixed md:static h-full z-40 ${sidebar?"":"hidden md:block"}`}>
-<h1 className="text-xl font-bold text-accent mb-4">Radio Mundo</h1>
-<div className="space-y-2">
-{["Mexico","Spain","Argentina","USA","Colombia"].map(c=>
-<button key={c} onClick={()=>{loadCountry(c);setSidebar(false)}} className="w-full text-left px-3 py-2 rounded hover:bg-slate-800">{c}</button>
-)}
-</div>
+<div className={`bg-slate-900 w-64 p-4 fixed md:static h-full z-40 ${open?"":"hidden md:block"}`}>
+<h1 className="text-xl font-bold text-accent mb-4">Radio Arturo</h1>
+<button onClick={()=>loadMexicoTop()} className="w-full text-left px-3 py-2 rounded hover:bg-slate-800">🇲🇽 Top México</button>
+<button onClick={()=>loadCountry("Mexico")} className="w-full text-left px-3 py-2 rounded hover:bg-slate-800">México</button>
+<button onClick={()=>loadCountry("Venezuela")} className="w-full text-left px-3 py-2 rounded hover:bg-slate-800">Venezuela</button>
 </div>
 
-{/* Content */}
 <div className="flex-1 md:ml-64 flex flex-col">
 
 <header className="md:hidden flex justify-between p-4 bg-slate-900">
-<h1 className="text-accent font-bold">Radio Mundo</h1>
-<button onClick={()=>setSidebar(!sidebar)}><i className="ph ph-list text-2xl"></i></button>
+<h2 className="text-accent font-bold">Radio Arturo</h2>
+<button onClick={()=>setOpen(!open)}><i className="ph ph-list text-2xl"></i></button>
 </header>
 
 <div className="p-4 flex gap-2">
-<input value={search} onChange={e=>setSearch(e.target.value)} className="flex-1 bg-slate-800 p-2 rounded" placeholder="Buscar estación..." />
-<button onClick={()=>searchStation(search)} className="bg-accent text-black px-4 rounded">Buscar</button>
+<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Buscar estación..."
+className="flex-1 bg-slate-800 p-2 rounded"/>
+<button onClick={searchRadio} className="bg-accent text-black px-4 rounded">Buscar</button>
 </div>
 
 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 overflow-auto pb-32">
-{stations.map(s=>
-<div key={s.stationuuid} onClick={()=>{setCurrent(s);setPlaying(true)}} className="bg-slate-900 p-3 rounded-lg hover:shadow-[0_0_15px_#22d3ee] cursor-pointer">
-<img src={s.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"} className="h-20 mx-auto mb-2"/>
-<h3 className="text-sm font-bold">{s.name}</h3>
+{stations.map(s=>(
+<div key={s.stationuuid} onClick={()=>{setCurrent(s);setPlaying(true)}}
+className="bg-slate-900 p-3 rounded-xl hover:shadow-[0_0_15px_#22d3ee] transition cursor-pointer">
+<img src={s.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"}
+className="h-20 mx-auto mb-2"/>
+<h3 className="text-sm font-bold truncate">{s.name}</h3>
 <p className="text-xs text-slate-400">{s.country}</p>
 </div>
-)}
+))}
 </div>
 
 {/* Player */}
 <div className="fixed bottom-0 left-0 right-0 bg-slate-900/70 backdrop-blur-lg p-3 flex items-center gap-4">
-{current && <audio src={current.url_resolved} ref={audioRef} autoPlay={playing} onError={()=>alert("Stream falló")} />}
-<button onClick={()=>{if(!audioRef.current)return; playing?audioRef.current.pause():audioRef.current.play();setPlaying(!playing)}} className="text-accent text-3xl">
+{current && <audio ref={audioRef} src={current.url_resolved} autoPlay onError={()=>alert("Stream no disponible")} />}
+<button onClick={()=>{
+ if(!audioRef.current)return
+ playing?audioRef.current.pause():audioRef.current.play()
+ setPlaying(!playing)
+}} className="text-accent text-3xl">
 <i className={`ph ${playing?"ph-pause":"ph-play"}`}></i>
 </button>
+
 <canvas ref={canvasRef} width="300" height="50"></canvas>
+
 <input type="range" min="0" max="1" step="0.01" onChange={e=>audioRef.current.volume=e.target.value}/>
 </div>
 
@@ -179,3 +179,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
 </script>
 </body>
 </html>
+
