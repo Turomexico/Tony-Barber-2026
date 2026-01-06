@@ -16,10 +16,7 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config = {
- darkMode:'class',
- theme:{extend:{colors:{bg:"#020617",accent:"#22d3ee"}}}
-}
+tailwind.config={darkMode:'class',theme:{extend:{colors:{bg:"#020617",accent:"#22d3ee"}}}}
 </script>
 
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -30,7 +27,7 @@ tailwind.config = {
 <style>
 ::-webkit-scrollbar{display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-.animate-spin-slow{animation:spin 6s linear infinite}
+.animate-spin-slow{animation:spin 10s linear infinite}
 </style>
 </head>
 
@@ -46,9 +43,6 @@ const [stations,setStations]=useState([])
 const [current,setCurrent]=useState(null)
 const [playing,setPlaying]=useState(false)
 const [search,setSearch]=useState("")
-const [favorites,setFavorites]=useState(JSON.parse(localStorage.getItem("fav")||"[]"))
-const [history,setHistory]=useState(JSON.parse(localStorage.getItem("hist")||"[]"))
-const [dark,setDark]=useState(true)
 const audioRef=useRef(null)
 const canvasRef=useRef(null)
 
@@ -57,53 +51,26 @@ useEffect(()=>{load("Mexico")},[])
 async function load(c){
  const r=await fetch("https://de1.api.radio-browser.info/json/stations/bycountry/"+c)
  const d=await r.json()
- setStations(d.filter(s=>s.url_resolved && s.url_resolved.startsWith("https")))
-}
-
-async function searchRadio(){
- const r=await fetch("https://de1.api.radio-browser.info/json/stations/search?name="+search)
- const d=await r.json()
- setStations(d.filter(s=>s.url_resolved && s.url_resolved.startsWith("https")))
+ setStations(d.filter(s=>s.url_resolved?.startsWith("https")))
 }
 
 function play(s){
  setCurrent(s)
  setTimeout(()=>audioRef.current.play(),200)
  setPlaying(true)
- const h=[s,...history.filter(x=>x.stationuuid!==s.stationuuid)].slice(0,20)
- setHistory(h)
- localStorage.setItem("hist",JSON.stringify(h))
 }
 
-function toggleFav(s){
- let f
- if(favorites.find(x=>x.stationuuid===s.stationuuid)){
-  f=favorites.filter(x=>x.stationuuid!==s.stationuuid)
- }else{
-  f=[s,...favorites]
- }
- setFavorites(f)
- localStorage.setItem("fav",JSON.stringify(f))
-}
-
-useEffect(()=>{
- try{
-  const key=location.hostname.replace(/\./g,"_")
-  fetch(`https://api.countapi.xyz/hit/${COUNT}/${key}`)
-   .then(r=>r.json()).then(d=>localStorage.setItem("visits",d.value))
- }catch{}
-},[])
-
-/* Visualizador Pro */
+/* Visualizador Mobile Friendly */
 useEffect(()=>{
  if(!audioRef.current||!canvasRef.current)return
  const AudioCtx=window.AudioContext||window.webkitAudioContext
  const ctxAudio=new AudioCtx()
  const src=ctxAudio.createMediaElementSource(audioRef.current)
  const analyser=ctxAudio.createAnalyser()
- analyser.fftSize=128
+ analyser.fftSize=64
  src.connect(analyser)
  analyser.connect(ctxAudio.destination)
+
  const buffer=new Uint8Array(analyser.frequencyBinCount)
  const c=canvasRef.current
  const ctx=c.getContext("2d")
@@ -112,10 +79,10 @@ useEffect(()=>{
   requestAnimationFrame(draw)
   analyser.getByteFrequencyData(buffer)
   ctx.clearRect(0,0,c.width,c.height)
-  const cx=c.width/2, cy=c.height/2, radius=35
+  const cx=c.width/2, cy=c.height/2, radius=c.width*0.18
   buffer.forEach((v,i)=>{
     const ang=(i/buffer.length)*Math.PI*2
-    const len=v/2
+    const len=v/3
     const x1=cx+Math.cos(ang)*radius
     const y1=cy+Math.sin(ang)*radius
     const x2=cx+Math.cos(ang)*(radius+len)
@@ -132,71 +99,61 @@ useEffect(()=>{
 },[current])
 
 return(
-<div className={dark?"dark":""}>
-<div className="h-screen flex flex-col bg-bg dark:bg-bg bg-slate-100 dark:text-white text-black">
+<div className="h-screen flex flex-col">
 
-<header className="p-3 flex justify-between items-center">
+<header className="p-3 flex items-center gap-3 border-b border-slate-800">
+<img src="https://i.ibb.co/8LNH1SBm/Chat-GPT-Image-6-ene-2026-11-20-07-a-m.png" className="w-10 h-10 rounded-xl"/>
 <div className="font-bold text-accent">Radio Arturo</div>
-<div className="flex gap-2">
-<input value={search} onChange={e=>setSearch(e.target.value)} onKeyDown={e=>e.key==="Enter"&&searchRadio()}
-className="bg-slate-800 text-white px-3 py-1 rounded"/>
-<button onClick={()=>setDark(!dark)}><i className="ph ph-moon"></i></button>
-<button onClick={()=>load("Mexico")}>🇲🇽</button>
-<button onClick={()=>load("Venezuela")}>🇻🇪</button>
-</div>
 </header>
 
-<div className="flex-1 overflow-auto p-3 space-y-3">
-{stations.map(s=>(
-<div key={s.stationuuid} className="flex items-center gap-3 bg-slate-900 p-3 rounded-xl hover:bg-slate-800">
+<div className="p-3">
+<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Buscar estación..."
+className="w-full p-3 rounded bg-slate-900 text-white"/>
+</div>
+
+<div className="flex-1 overflow-auto px-3 space-y-3">
+{stations.filter(s=>s.name.toLowerCase().includes(search.toLowerCase())).map(s=>(
+<div key={s.stationuuid} className="flex items-center gap-3 bg-slate-900 p-3 rounded-xl">
 <img src={s.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"} className="w-12 h-12 rounded"/>
 <div onClick={()=>play(s)} className="flex-1 cursor-pointer">
-<div className="font-semibold truncate">{s.name}</div>
+<div className="truncate font-semibold">{s.name}</div>
 <div className="text-xs text-slate-400">{s.country}</div>
 </div>
-<button onClick={()=>toggleFav(s)} className="text-accent">
-<i className={`ph ${favorites.find(x=>x.stationuuid===s.stationuuid)?"ph-heart-fill":"ph-heart"}`}></i>
-</button>
 </div>
 ))}
 </div>
 
-<footer className="p-4 bg-slate-900/80 backdrop-blur-xl border-t border-cyan-500/20">
+{/* Player */}
+<div className="p-4 bg-slate-900/80 backdrop-blur-xl border-t border-cyan-500/20">
 {current && <audio ref={audioRef} src={current.url_resolved} crossOrigin="anonymous"/>}
 
-<div className="flex items-center gap-4">
+<div className="flex flex-col items-center">
 
-<div className="relative">
+<div className="relative mb-3">
 <img src={current?.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"}
-className={`w-16 h-16 rounded-full border-2 border-accent ${playing?"animate-spin-slow":""}`}/>
-<div className="absolute inset-0 rounded-full blur-xl bg-cyan-400 opacity-40"></div>
+className={`w-20 h-20 rounded-full border-2 border-accent ${playing?"animate-spin-slow":""}`}/>
+<div className="absolute inset-0 blur-xl bg-cyan-400 opacity-30 rounded-full"></div>
 </div>
 
-<div className="flex-1">
 <div className="font-bold truncate">{current?.name||"Selecciona una estación"}</div>
-<div className="flex gap-4 mt-2">
-<button className="p-2 bg-slate-800 rounded-full"><i className="ph ph-skip-back"></i></button>
-<button onClick={()=>{playing?audioRef.current.pause():audioRef.current.play();setPlaying(!playing)}} 
-className="p-4 bg-accent text-black rounded-full shadow-xl">
+
+<button onClick={()=>{playing?audioRef.current.pause():audioRef.current.play();setPlaying(!playing)}}
+className="mt-3 p-4 rounded-full bg-accent text-black text-xl shadow-xl">
 <i className={`ph ${playing?"ph-pause":"ph-play"}`}></i>
 </button>
-<button className="p-2 bg-slate-800 rounded-full"><i className="ph ph-skip-forward"></i></button>
-</div>
-</div>
+
+<canvas ref={canvasRef} width="280" height="120" className="mt-4 w-full max-w-xs"></canvas>
 
 <input type="range" min="0" max="1" step="0.01" onChange={e=>audioRef.current.volume=e.target.value}
-className="w-24 accent-cyan-400"/>
+className="w-full max-w-xs mt-3 accent-cyan-400"/>
 
 </div>
-
-<canvas ref={canvasRef} width="300" height="120" className="w-full mt-4"></canvas>
-</footer>
-
-<div className="text-center text-xs p-2">
-Visitas: {localStorage.getItem("visits")||0} | Realizado por Arturo T.
 </div>
 
+<div className="text-center text-xs p-2 text-slate-400">
+Realizado por Arturo T.
 </div>
+
 </div>
 )
 }
