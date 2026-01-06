@@ -3,168 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <title>Radio Arturo</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="manifest" href="data:application/json,{
   &quot;name&quot;:&quot;Radio Arturo&quot;,
   &quot;short_name&quot;:&quot;RadioArturo&quot;,
   &quot;start_url&quot;:&quot;.&quot;,
   &quot;display&quot;:&quot;standalone&quot;,
-  &quot;background_color&quot;:&quot;#020617&quot;,
-  &quot;theme_color&quot;:&quot;#22d3ee&quot;
+  &quot;background_color&quot;:&quot;#0f172a&quot;,
+  &quot;theme_color&quot;:&quot;#38bdf8&quot;
 }">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config = {
+tailwind.config={
  darkMode:'class',
- theme:{
-  extend:{colors:{bg:"#020617",accent:"#22d3ee"}}
- }
+ theme:{extend:{colors:{accent:"#38bdf8",bg:"#0f172a"}}}
 }
 </script>
 
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
 
 <style>
+body{font-family:system-ui}
 ::-webkit-scrollbar{display:none}
 </style>
 </head>
 
 <body class="bg-bg text-white">
-<div id="root"></div>
+<div id="app"></div>
 
 <script type="text/babel">
 const {useState,useEffect,useRef}=React
-const COUNT="ut_wrbgRkczfbovlvAS0v4umgmKBpnP7Cu3e7YpXPm0"
 
 function App(){
 const [stations,setStations]=useState([])
 const [current,setCurrent]=useState(null)
 const [playing,setPlaying]=useState(false)
-const [search,setSearch]=useState("")
-const [favorites,setFavorites]=useState(JSON.parse(localStorage.getItem("fav")||"[]"))
-const [history,setHistory]=useState(JSON.parse(localStorage.getItem("hist")||"[]"))
+const [fav,setFav]=useState(JSON.parse(localStorage.getItem("fav")||"[]"))
 const [dark,setDark]=useState(true)
-const audioRef=useRef(null)
-const canvasRef=useRef(null)
+const audio=useRef(null)
 
 useEffect(()=>{load("Mexico")},[])
 
 async function load(c){
  const r=await fetch("https://de1.api.radio-browser.info/json/stations/bycountry/"+c)
  const d=await r.json()
- setStations(d.filter(s=>s.url_resolved && s.url_resolved.startsWith("https")))
-}
-
-async function searchRadio(){
- const r=await fetch("https://de1.api.radio-browser.info/json/stations/search?name="+search)
- const d=await r.json()
- setStations(d.filter(s=>s.url_resolved && s.url_resolved.startsWith("https")))
+ setStations(d.filter(s=>s.url_resolved?.startsWith("https")).slice(0,80))
 }
 
 function play(s){
  setCurrent(s)
- setTimeout(()=>audioRef.current.play(),200)
+ setTimeout(()=>audio.current.play(),200)
  setPlaying(true)
- const h=[s,...history.filter(x=>x.stationuuid!==s.stationuuid)].slice(0,20)
- setHistory(h)
- localStorage.setItem("hist",JSON.stringify(h))
 }
 
-function toggleFav(s){
+function toggle(s){
  let f
- if(favorites.find(x=>x.stationuuid===s.stationuuid)){
-  f=favorites.filter(x=>x.stationuuid!==s.stationuuid)
- }else{
-  f=[s,...favorites]
- }
- setFavorites(f)
+ if(fav.find(x=>x.stationuuid===s.stationuuid)){
+  f=fav.filter(x=>x.stationuuid!==s.stationuuid)
+ }else f=[s,...fav]
+ setFav(f)
  localStorage.setItem("fav",JSON.stringify(f))
 }
 
-useEffect(()=>{
- try{
-  const key=location.hostname.replace(/\./g,"_")
-  fetch(`https://api.countapi.xyz/hit/${COUNT}/${key}`)
-   .then(r=>r.json()).then(d=>localStorage.setItem("visits",d.value))
- }catch{}
-},[])
-
-useEffect(()=>{
- if(!audioRef.current||!canvasRef.current)return
- const ctx=new AudioContext()
- const src=ctx.createMediaElementSource(audioRef.current)
- const analyser=ctx.createAnalyser()
- src.connect(analyser)
- analyser.connect(ctx.destination)
- analyser.fftSize=64
- const data=new Uint8Array(analyser.frequencyBinCount)
- const c=canvasRef.current.getContext("2d")
- function draw(){
-  requestAnimationFrame(draw)
-  analyser.getByteFrequencyData(data)
-  c.clearRect(0,0,300,60)
-  data.forEach((v,i)=>{
-   c.fillStyle="#22d3ee"
-   c.fillRect(i*6,60-v/3,4,v/3)
-  })
- }
- draw()
-},[current])
-
 return(
 <div className={dark?"dark":""}>
-<div className="h-screen flex flex-col bg-bg dark:bg-bg bg-slate-100 text-white dark:text-white text-black">
+<div className="h-screen flex flex-col bg-bg dark:bg-bg bg-white dark:text-white text-black">
 
-{/* Header */}
-<div className="p-3 flex justify-between items-center">
-<div className="font-bold text-accent">Radio Arturo</div>
-<div className="flex gap-2">
-<button onClick={()=>setDark(!dark)}><i className="ph ph-sun"></i></button>
-<button onClick={()=>load("Mexico")}>🇲🇽</button>
-<button onClick={()=>load("Venezuela")}>🇻🇪</button>
+<header className="flex justify-between items-center p-4 border-b border-slate-800">
+<h1 className="font-bold tracking-wide">Radio Arturo</h1>
+<div className="flex gap-3">
+<button onClick={()=>setDark(!dark)}><i className="ph ph-moon"></i></button>
+<button onClick={()=>load("Mexico")}>MX</button>
+<button onClick={()=>load("Venezuela")}>VE</button>
 </div>
-</div>
+</header>
 
-<input value={search} onChange={e=>setSearch(e.target.value)} onKeyDown={e=>e.key==="Enter"&&searchRadio()}
-className="mx-3 p-3 rounded bg-slate-800 text-white"/>
-
-{/* Stations */}
-<div className="flex-1 overflow-auto p-3 space-y-3">
+<main className="flex-1 overflow-auto divide-y divide-slate-800">
 {stations.map(s=>(
-<div key={s.stationuuid} className="flex items-center gap-3 bg-slate-900 p-3 rounded-xl">
-<img src={s.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"} className="w-12 h-12 rounded"/>
-<div onClick={()=>play(s)} className="flex-1 cursor-pointer">
-<div className="font-semibold truncate">{s.name}</div>
-<div className="text-xs text-slate-400">{s.country}</div>
+<div key={s.stationuuid} className="flex items-center p-3 hover:bg-slate-800/40 cursor-pointer">
+<img src={s.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"} className="w-10 h-10 rounded"/>
+<div onClick={()=>play(s)} className="ml-3 flex-1 truncate">
+<div className="font-medium">{s.name}</div>
+<div className="text-xs opacity-60">{s.country}</div>
 </div>
-<button onClick={()=>toggleFav(s)} className="text-accent">
-<i className={`ph ${favorites.find(x=>x.stationuuid===s.stationuuid)?"ph-heart-fill":"ph-heart"}`}></i>
+<button onClick={()=>toggle(s)} className="text-accent">
+<i className={`ph ${fav.find(x=>x.stationuuid===s.stationuuid)?"ph-heart-fill":"ph-heart"}`}></i>
 </button>
 </div>
 ))}
-</div>
+</main>
 
-{/* Player */}
-<div className="p-3 bg-slate-900/70 backdrop-blur-xl">
-{current && <audio ref={audioRef} src={current.url_resolved} crossOrigin="anonymous"/>}
-<div className="flex items-center gap-3">
-<img src={current?.favicon} className="w-12 h-12 rounded"/>
-<button onClick={()=>{playing?audioRef.current.pause():audioRef.current.play();setPlaying(!playing)}} className="text-accent text-3xl">
+<footer className="border-t border-slate-800 p-3 flex items-center gap-3">
+{current && <audio ref={audio} src={current.url_resolved}/>}
+<img src={current?.favicon} className="w-10 h-10 rounded"/>
+<button onClick={()=>{playing?audio.current.pause():audio.current.play();setPlaying(!playing)}} className="text-accent text-2xl">
 <i className={`ph ${playing?"ph-pause":"ph-play"}`}></i>
 </button>
-<div className="flex-1 truncate">{current?.name||"Selecciona una estación"}</div>
-</div>
-<canvas ref={canvasRef} width="300" height="60" className="w-full mt-2"></canvas>
-<input type="range" min="0" max="1" step="0.01" className="w-full" onChange={e=>audioRef.current.volume=e.target.value}/>
-</div>
-
-<footer className="text-center text-xs p-2">
-Visitas: {localStorage.getItem("visits")||0} | Realizado por Daniel CB
+<div className="flex-1 truncate text-sm">{current?.name||"Selecciona una estación"}</div>
+<input type="range" min="0" max="1" step="0.01" className="w-24" onChange={e=>audio.current.volume=e.target.value}/>
 </footer>
 
 </div>
@@ -172,7 +113,7 @@ Visitas: {localStorage.getItem("visits")||0} | Realizado por Daniel CB
 )
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
+ReactDOM.createRoot(document.getElementById("app")).render(<App/>)
 </script>
 </body>
 </html>
