@@ -1,164 +1,2772 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Radio Arturo</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morada Luna - Airbnb</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales con tipografía moderna */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<link rel="manifest" href="data:application/json,{
-  &quot;name&quot;:&quot;Radio Arturo&quot;,
-  &quot;short_name&quot;:&quot;RadioArturo&quot;,
-  &quot;start_url&quot;:&quot;.&quot;,
-  &quot;display&quot;:&quot;standalone&quot;,
-  &quot;background_color&quot;:&quot;#020617&quot;,
-  &quot;theme_color&quot;:&quot;#22d3ee&quot;
-}">
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config={darkMode:'class',theme:{extend:{colors:{bg:"#020617",accent:"#22d3ee"}}}}
-</script>
+        /* Header y navegación */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            font-family: 'Poppins', sans-serif;
+        }
 
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-<style>
-::-webkit-scrollbar{display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-.animate-spin-slow{animation:spin 10s linear infinite}
-</style>
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #4a6fa5;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 5px 0;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #4a6fa5;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #4a6fa5;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Nuevo botón FIFA 2026™ */
+        .nav-links .fifa-btn {
+            background: linear-gradient(45deg, #0033a0, #ce1126);
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-weight: 700;
+            animation: fifaPulse 3s infinite;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-links .fifa-btn:hover {
+            background: linear-gradient(45deg, #002080, #a00d1e);
+            transform: scale(1.05);
+        }
+
+        .nav-links .fifa-btn::after {
+            display: none;
+        }
+
+        @keyframes fifaPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(0, 51, 160, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(0, 51, 160, 0);
+            }
+        }
+
+        /* Banner hero con slideshow */
+        .hero-banner {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 2;
+            max-width: 800px;
+            width: 90%;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .banner-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .banner-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .slide-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            width: 70px;
+            height: 70px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 34px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            animation: pulse 2s infinite;
+            cursor: pointer;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #128C7E;
+            transform: scale(1.15);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+            animation: none;
+        }
+
+        .whatsapp-float i {
+            margin-top: 5px;
+        }
+
+        .whatsapp-text {
+            position: absolute;
+            right: 80px;
+            background-color: #25d366;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s, right 0.3s;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            max-width: 200px;
+            text-align: center;
+        }
+
+        .whatsapp-float:hover .whatsapp-text {
+            opacity: 1;
+            right: 85px;
+        }
+
+        /* Modal de WhatsApp */
+        .whatsapp-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .whatsapp-modal-content {
+            background-color: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .whatsapp-modal h3 {
+            color: #25d366;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .whatsapp-modal p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .whatsapp-contact-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .whatsapp-contact-option:hover {
+            background-color: #f5f5f5;
+            border-color: #25d366;
+            transform: translateY(-2px);
+        }
+
+        .whatsapp-contact-option i {
+            font-size: 1.5rem;
+            color: #25d366;
+            margin-right: 1rem;
+        }
+
+        .whatsapp-contact-option span {
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Animación de pulso para WhatsApp */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* Search section */
+        .search-section {
+            max-width: 1200px;
+            margin: -50px auto 2rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .search-input {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-input label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .search-input input,
+        .search-input select {
+            padding: 0.9rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-input input:focus,
+        .search-input select:focus {
+            border-color: #4a6fa5;
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: #ff5a5f;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            align-self: end;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary:hover {
+            background-color: #e04a50;
+        }
+
+        /* Animación de búsqueda */
+        @keyframes searchAnimation {
+            0% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.05);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .searching {
+            animation: searchAnimation 4s ease-in-out;
+            background-color: #4a6fa5 !important;
+        }
+
+        /* Sección Quiénes Somos */
+        .about-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            color: #4a6fa5;
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .about-text p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Sección de servicios */
+        .services-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #4a6fa5;
+            font-size: 2.2rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        .services-grid-minimal {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .service-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .service-icon-mini {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #4a6fa5, #6d9dc5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .service-info h4 {
+            color: #333;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .service-info p {
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        /* Estilos para reseñas cuadriculadas */
+        .reviews-grid-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .review-card-grid {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid #f0f0f0;
+        }
+
+        .review-card-grid:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .reviewer-info-grid {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .reviewer-avatar-grid {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid #4a6fa5;
+        }
+
+        .reviewer-avatar-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reviewer-details-grid {
+            flex-grow: 1;
+        }
+
+        .reviewer-name-grid {
+            font-weight: 700;
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .stars-grid {
+            color: #FFD700;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .review-date-grid {
+            color: #888;
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        .review-text-grid {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+            flex-grow: 1;
+        }
+
+        .review-highlight-grid {
+            color: #4a6fa5;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.5rem 0.8rem;
+            background: #f0f7ff;
+            border-radius: 6px;
+            border-left: 3px solid #4a6fa5;
+            margin-top: auto;
+        }
+
+        /* Sección FIFA 2026™ */
+        .fifa-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .fifa-modal-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.5s ease-out;
+        }
+
+        .fifa-header {
+            background: linear-gradient(45deg, #0033a0, #ce1126);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fifa-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://upload.wikimedia.org/wikipedia/en/thumb/6/67/2026_FIFA_World_Cup.svg/1200px-2026_FIFA_World_Cup.svg.png') center/contain no-repeat;
+            opacity: 0.1;
+        }
+
+        .fifa-header h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+        }
+
+        .fifa-header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .fifa-body {
+            padding: 3rem 2rem;
+        }
+
+        .fifa-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #0033a0;
+            border-right: 5px solid #ce1126;
+        }
+
+        .fifa-intro h3 {
+            color: #0033a0;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .fifa-intro p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            max-width: 900px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .fifa-players {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .player-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .player-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .player-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 3px solid #0033a0;
+        }
+
+        .player-info {
+            padding: 1.5rem;
+        }
+
+        .player-info h4 {
+            color: #0033a0;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .player-info p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .fifa-schedule {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 3rem 0;
+            border: 2px solid #0033a0;
+        }
+
+        .fifa-schedule h3 {
+            color: #0033a0;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .match-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #ce1126;
+        }
+
+        .match-date {
+            color: #0033a0;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .match-date i {
+            color: #ce1126;
+        }
+
+        .match-info {
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .stadium-info {
+            background: #0033a0;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .stadium-info i {
+            font-size: 2rem;
+            color: #ffd700;
+        }
+
+        .stadium-details h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .fifa-amenities {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: #fff5f5;
+            border-radius: 15px;
+            border: 2px solid #ce1126;
+        }
+
+        .fifa-amenities h3 {
+            color: #ce1126;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .amenity-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #0033a0, #ce1126);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .amenity-text h4 {
+            color: #0033a0;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .amenity-text p {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .fifa-cta {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(45deg, #0033a0, #ce1126);
+            color: white;
+            border-radius: 15px;
+            margin-top: 3rem;
+        }
+
+        .fifa-cta h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+        }
+
+        .fifa-cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        .btn-fifa {
+            background: white;
+            color: #0033a0;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-fifa:hover {
+            background: #ffd700;
+            transform: scale(1.05);
+            color: #ce1126;
+        }
+
+        .close-fifa {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background 0.3s;
+        }
+
+        .close-fifa:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Sección Explora CDMX */
+        .explore-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 4rem 0;
+            margin: 4rem 0;
+        }
+
+        .explore-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .attraction-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .attraction-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .attraction-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .attraction-content {
+            padding: 1.5rem;
+        }
+
+        .attraction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .attraction-header h3 {
+            color: #4a6fa5;
+            margin-bottom: 0;
+            font-size: 1.3rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .attraction-toggle-btn {
+            background: #4a6fa5;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .attraction-toggle-btn:hover {
+            background: #3a5a8a;
+            transform: scale(1.1);
+        }
+
+        .attraction-toggle-btn i {
+            transition: transform 0.3s;
+        }
+
+        .attraction-toggle-btn.expanded i {
+            transform: rotate(180deg);
+        }
+
+        .attraction-info {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.3s ease;
+        }
+
+        .attraction-info.expanded {
+            max-height: 500px;
+            opacity: 1;
+            margin-top: 1rem;
+        }
+
+        .attraction-info p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        .attraction-tag {
+            display: inline-block;
+            background-color: #f0f7ff;
+            color: #4a6fa5;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .attraction-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .attraction-actions .btn-visit {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .attraction-actions .btn-visit:hover {
+            background-color: #3a5a8a;
+        }
+
+        /* Sección de propiedades */
+        .properties-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .property-card-simple {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .property-card-simple:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .property-card-simple img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .property-content-simple {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .property-content-simple h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .btn-visit {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            margin-top: auto;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-visit:hover {
+            background-color: #3a5a8a;
+        }
+
+        /* Utilidades */
+        .hidden {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6fa5 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .footer-logo img {
+            height: 70px;
+            width: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .footer-logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .footer-links h4,
+        .footer-contact h4,
+        .footer-social h4 {
+            margin-bottom: 1.2rem;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 400;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            border-radius: 12px;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-icons a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-icons a:hover::before {
+            opacity: 1;
+        }
+
+        .social-icons a.instagram:hover {
+            background: linear-gradient(145deg, #E1306C, #C13584);
+        }
+
+        .social-icons a.facebook:hover {
+            background: linear-gradient(145deg, #1877F2, #0A5BC4);
+        }
+
+        .social-icons a.whatsapp:hover {
+            background: linear-gradient(145deg, #25D366, #128C7E);
+        }
+
+        .social-icons a.airbnb:hover {
+            background: linear-gradient(145deg, #FF5A5F, #E04A50);
+        }
+
+        .social-icons a.tech-support {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            position: relative;
+        }
+
+        .social-icons a.tech-support:hover {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+        }
+
+        .social-icons a.tech-support i {
+            font-size: 1.3rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-banner {
+                height: 400px;
+            }
+            
+            .banner-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .fifa-header h2 {
+                font-size: 2.5rem;
+            }
+            
+            .fifa-players {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-banner {
+                height: 350px;
+            }
+            
+            .banner-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .banner-content p {
+                font-size: 1rem;
+            }
+            
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                font-size: 28px;
+            }
+            
+            .whatsapp-text {
+                right: 70px;
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+            
+            .whatsapp-float:hover .whatsapp-text {
+                right: 75px;
+            }
+            
+            .properties-grid,
+            .services-grid-minimal,
+            .explore-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .review-card-grid {
+                min-width: 100%;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-logo {
+                align-items: center;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+            
+            .fifa-header h2 {
+                font-size: 2rem;
+            }
+            
+            .fifa-header p {
+                font-size: 1rem;
+            }
+            
+            .fifa-players {
+                grid-template-columns: 1fr;
+            }
+            
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-banner {
+                height: 300px;
+            }
+            
+            .banner-content {
+                padding: 1.5rem;
+            }
+            
+            .banner-content h1 {
+                font-size: 1.6rem;
+            }
+            
+            .search-section {
+                padding: 0 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .review-card-grid {
+                padding: 1.5rem;
+            }
+            
+            .social-icons {
+                gap: 0.8rem;
+            }
+            
+            .social-icons a {
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+            
+            .fifa-body {
+                padding: 2rem 1rem;
+            }
+            
+            .fifa-intro {
+                padding: 1.5rem;
+            }
+            
+            .fifa-cta {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
 </head>
+<body>
+    <!-- WhatsApp Modal -->
+    <div class="whatsapp-modal" id="whatsappModal">
+        <div class="whatsapp-modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h3>Comenzar una conversación</h3>
+            <p>¡Hola! Haz clic en uno de nuestros miembros de abajo para chatear por WhatsApp. El equipo suele responder en unos minutos.</p>
+            <a href="https://wa.me/5215511406820?text=¡Hola! Necesito información sobre Morada Luna" class="whatsapp-contact-option" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+                <span>Morada Luna - Atención al Cliente</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
 
-<body class="bg-bg text-white">
-<div id="root"></div>
+    <!-- FIFA 2026™ Modal -->
+    <div class="fifa-modal" id="fifaModal">
+        <div class="fifa-modal-content">
+            <button class="close-fifa" id="closeFifa">&times;</button>
+            <div class="fifa-header">
+                <h2>FIFA 2026™</h2>
+                <p>¡Morada Luna está listo para el Mundial de Fútbol en Ciudad de México!</p>
+            </div>
+            
+            <div class="fifa-body">
+                <div class="fifa-intro">
+                    <h3>¡Bienvenidos al Mundial FIFA 2026 en México!</h3>
+                    <p>En <strong>Morada Luna</strong> estamos emocionados de recibir a los aficionados de fútbol de todo el mundo. Ciudad de México será una de las sedes principales del torneo más grande del planeta, y nuestros alojamientos están perfectamente preparados para ofrecerte la mejor experiencia durante tu estadía.</p>
+                    <p>Contamos con todas las amenidades necesarias para que disfrutes de los partidos en un ambiente cómodo, seguro y con el auténtico espíritu mexicano.</p>
+                </div>
 
-<script type="text/babel">
-const {useState,useEffect,useRef}=React
-const COUNT="ut_wrbgRkczfbovlvAS0v4umgmKBpnP7Cu3e7YpXPm0"
+                <!-- Jugadores Estelares -->
+                <div class="section-title">
+                    <h3>Estrellas del Mundial 2026</h3>
+                    <p>Los mejores jugadores del mundo llegarán a México</p>
+                </div>
+                
+                <div class="fifa-players">
+                    <div class="player-card">
+                        <img src="https://a.espncdn.com/i/headshots/soccer/players/full/45843.png" alt="Lionel Messi" class="player-image">
+                        <div class="player-info">
+                            <h4>Lionel Messi</h4>
+                            <p>8 veces Balón de Oro, campeón del Mundial 2022. Posiblemente su último mundial.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <img src="https://img.uefa.com/imgml/TP/players/2014/2025/cutoff/63706.webp" alt="Cristiano Ronaldo" class="player-image">
+                        <div class="player-info">
+                            <h4>Cristiano Ronaldo</h4>
+                            <p>5 veces Balón de Oro, máximo goleador histórico. Buscará su primer mundial.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <img src="https://img.uefa.com/imgml/TP/players/2014/2025/cutoff/250076574.webp" alt="Kylian Mbappé" class="player-image">
+                        <div class="player-info">
+                            <h4>Kylian Mbappé</h4>
+                            <p>Campeón del mundo 2018, estrella emergente y futuro del fútbol mundial.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="player-card">
+                        <img src="https://img.uefa.com/imgml/TP/players/1/2026/cutoff/250103758.webp" alt="Erling Haaland" class="player-image">
+                        <div class="player-info">
+                            <h4>Erling Haaland</h4>
+                            <p>Máquina goleadora noruega, uno de los jugadores más temidos del planeta.</p>
+                        </div>
+                    </div>
+                </div>
 
-function App(){
-const [stations,setStations]=useState([])
-const [current,setCurrent]=useState(null)
-const [playing,setPlaying]=useState(false)
-const [search,setSearch]=useState("")
-const audioRef=useRef(null)
-const canvasRef=useRef(null)
+                <!-- Calendario de Partidos en México -->
+                <div class="fifa-schedule">
+                    <h3>🗓️ Calendario de Partidos en Ciudad de México</h3>
+                    <p style="text-align: center; margin-bottom: 2rem; color: #0033a0; font-weight: bold;">Información Oficial FIFA - Partidos en el Estadio Azteca</p>
+                    
+                    <div class="schedule-grid">
+                        <div class="match-card">
+                            <div class="match-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>11 de Junio 2026</span>
+                            </div>
+                            <div class="match-info">
+                                <p><strong>Partido Inaugural Grupo A</strong></p>
+                                <p>México vs. Rival por Definir</p>
+                                <p><strong>Horario:</strong> 12:00 PM (Hora Local)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="match-card">
+                            <div class="match-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>18 de Junio 2026</span>
+                            </div>
+                            <div class="match-info">
+                                <p><strong>Octavos de Final</strong></p>
+                                <p>Partido 1 - Ganador Grupo B vs. Segundo Grupo A</p>
+                                <p><strong>Horario:</strong> 16:00 PM (Hora Local)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="match-card">
+                            <div class="match-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>25 de Junio 2026</span>
+                            </div>
+                            <div class="match-info">
+                                <p><strong>Cuartos de Final</strong></p>
+                                <p>Partido 3 - Cruce importante</p>
+                                <p><strong>Horario:</strong> 20:00 PM (Hora Local)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="match-card">
+                            <div class="match-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>3 de Julio 2026</span>
+                            </div>
+                            <div class="match-info">
+                                <p><strong>Semifinal</strong></p>
+                                <p>Uno de los partidos más importantes del torneo</p>
+                                <p><strong>Horario:</strong> 19:00 PM (Hora Local)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stadium-info">
+                        <i class="fas fa-futbol"></i>
+                        <div class="stadium-details">
+                            <h4>🏟️ Estadio Azteca - Ciudad de México</h4>
+                            <p><strong>Capacidad:</strong> 87,000 espectadores</p>
+                            <p><strong>Historial:</strong> Sede de 2 finales de Copa del Mundo (1970 y 1986)</p>
+                            <p><strong>Dirección:</strong> Calz. de Tlalpan 3465, Santa Ursula Coapa, 04650 Ciudad de México</p>
+                        </div>
+                    </div>
+                </div>
 
-useEffect(()=>{load("Mexico")},[])
+                <!-- Amenidades Especiales para el Mundial -->
+                <div class="fifa-amenities">
+                    <h3>🏆 Amenidades Especiales para Huéspedes del Mundial</h3>
+                    <div class="amenities-grid">
+                        <div class="amenity-item">
+                            <div class="amenity-icon">
+                                <i class="fas fa-tv"></i>
+                            </div>
+                            <div class="amenity-text">
+                                <h4>Pantallas de 40 Pulgadas Full HD</h4>
+                                <p>TVs de 40" Full HD con todos los canales deportivos</p>
+                            </div>
+                        </div>
+                        
+                        <div class="amenity-item">
+                            <div class="amenity-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="amenity-text">
+                                <h4>WiFi 5G Ultra Rápido</h4>
+                                <p>Para streaming sin interrupciones</p>
+                            </div>
+                        </div>
+                        
+                        <div class="amenity-item">
+                            <div class="amenity-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="amenity-text">
+                                <h4>Servicio de Catering</h4>
+                                <p>Menú especial para partidos</p>
+                            </div>
+                        </div>
+                        
+                        <div class="amenity-item">
+                            <div class="amenity-icon">
+                                <i class="fas fa-shuttle-van"></i>
+                            </div>
+                            <div class="amenity-text">
+                                <h4>Apoyo para solicitud de transporte al Estadio</h4>
+                                <p>Asistencia con Uber, Didi y otras apps</p>
+                            </div>
+                        </div>
+                        
+                        <div class="amenity-item">
+                            <div class="amenity-icon">
+                                <i class="fas fa-map-signs"></i>
+                            </div>
+                            <div class="amenity-text">
+                                <h4>Zonas Turísticas Cercanas al Alojamiento</h4>
+                                <p>Información y acceso a atracciones cercanas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="amenity-item">
+                            <div class="amenity-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="amenity-text">
+                                <h4>Áreas Sociales</h4>
+                                <p>Para ver partidos con otros fanáticos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-async function load(c){
- const r=await fetch("https://de1.api.radio-browser.info/json/stations/bycountry/"+c)
- const d=await r.json()
- setStations(d.filter(s=>s.url_resolved?.startsWith("https")))
-}
+                <!-- CTA Final -->
+                <div class="fifa-cta">
+                    <h3>¡Reserva Tu Estancia para el Mundial 2026 En Morada Luna!</h3>
+                    <p>Las reservas para el período del mundial ya están abiertas. Asegura tu alojamiento en la mejor ubicación de Ciudad de México para vivir la experiencia futbolera más grande del planeta.</p>
+                    <button class="btn-fifa" onclick="reserveWithFIFAAnimation()">Reservar Ahora</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-function play(s){
- setCurrent(s)
- setTimeout(()=>audioRef.current.play(),200)
- setPlaying(true)
-}
+    <!-- WhatsApp Floating Button -->
+    <div class="whatsapp-float" id="whatsappButton">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-text">¿Necesitas Ayuda?<br>Chatea con nosotros</span>
+    </div>
 
-/* Visualizador Mobile Friendly */
-useEffect(()=>{
- if(!audioRef.current||!canvasRef.current)return
- const AudioCtx=window.AudioContext||window.webkitAudioContext
- const ctxAudio=new AudioCtx()
- const src=ctxAudio.createMediaElementSource(audioRef.current)
- const analyser=ctxAudio.createAnalyser()
- analyser.fftSize=64
- src.connect(analyser)
- analyser.connect(ctxAudio.destination)
+    <header>
+        <nav>
+            <div class="logo-container">
+                <img src="https://github.com/Turomexico/MoradaLuna/blob/main/Captura%20de%20pantalla%202026-01-12%20105656.png?raw=true" 
+                     alt="Logo Morada Luna" class="logo">
+                <div class="logo-text">Morada Luna</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#quienes-somos">Quiénes Somos</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#reseñas">Reseñas</a></li>
+                <li><a href="#explora-cdmx">Explora CDMX</a></li>
+                <li><a href="#propiedades">Propiedades</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#" class="fifa-btn" id="fifaBtn">FIFA 2026™</a></li>
+            </ul>
+        </nav>
+    </header>
 
- const buffer=new Uint8Array(analyser.frequencyBinCount)
- const c=canvasRef.current
- const ctx=c.getContext("2d")
+    <main>
+        <!-- Banner Hero con Slideshow -->
+        <section class="hero-banner" id="inicio">
+            <div class="slideshow-container">
+                <div class="slide active" style="background-image: url('https://a0.muscache.com/im/pictures/miso/Hosting-1258969709472995115/original/a25745a2-197e-4848-b76f-567b344a274c.jpeg?im_w=1440');"></div>
+                <div class="slide" style="background-image: url('https://a0.muscache.com/im/pictures/hosting/Hosting-1270521288480613949/original/9a10b18c-7b51-4fb1-82b0-1923e0d799ea.jpeg?im_w=1440');"></div>
+                <div class="slide" style="background-image: url('https://a0.muscache.com/im/pictures/miso/Hosting-1259085572925875795/original/4a3afd77-b12a-4611-8689-477c9d9eb53e.jpeg?im_w=1440');"></div>
+                
+                <div class="banner-content">
+                    <h1>Tu refugio perfecto bajo la luna</h1>
+                    <p>Descubre experiencias únicas de alojamiento en los mejores destinos de México</p>
+                    <a href="#propiedades" class="btn-primary" style="text-decoration: none; display: inline-block;">Ver Propiedades</a>
+                </div>
+                
+                <div class="slide-indicators">
+                    <div class="indicator active" data-slide="0"></div>
+                    <div class="indicator" data-slide="1"></div>
+                    <div class="indicator" data-slide="2"></div>
+                </div>
+            </div>
+        </section>
 
- function draw(){
-  requestAnimationFrame(draw)
-  analyser.getByteFrequencyData(buffer)
-  ctx.clearRect(0,0,c.width,c.height)
-  const cx=c.width/2, cy=c.height/2, radius=c.width*0.18
-  buffer.forEach((v,i)=>{
-    const ang=(i/buffer.length)*Math.PI*2
-    const len=v/3
-    const x1=cx+Math.cos(ang)*radius
-    const y1=cy+Math.sin(ang)*radius
-    const x2=cx+Math.cos(ang)*(radius+len)
-    const y2=cy+Math.sin(ang)*(radius+len)
-    ctx.strokeStyle=`rgba(34,211,238,${v/255})`
-    ctx.lineWidth=2
-    ctx.beginPath()
-    ctx.moveTo(x1,y1)
-    ctx.lineTo(x2,y2)
-    ctx.stroke()
-  })
- }
- draw()
-},[current])
+        <!-- Sección de búsqueda -->
+        <section class="search-section">
+            <div class="search-box">
+                <div class="search-input">
+                    <label>Lugar</label>
+                    <select id="location">
+                        <option value="">Seleccionar lugar</option>
+                        <option value="Roma Norte">Roma Norte</option>
+                        <option value="Coyoacán">Coyoacán</option>
+                        <option value="Polanco">Polanco</option>
+                        <option value="Condesa">Condesa</option>
+                    </select>
+                </div>
+                <div class="search-input">
+                    <label>Check-in</label>
+                    <input type="date" id="checkin-date">
+                </div>
+                <div class="search-input">
+                    <label>Check-out</label>
+                    <input type="date" id="checkout-date">
+                </div>
+                <div class="search-input">
+                    <label>Adultos</label>
+                    <select id="adults">
+                        <option value="1">1 adulto</option>
+                        <option value="2" selected>2 adultos</option>
+                        <option value="3">3 adultos</option>
+                        <option value="4">4 adultos</option>
+                        <option value="5">5 adultos</option>
+                        <option value="6">6 adultos</option>
+                    </select>
+                </div>
+                <div class="search-input">
+                    <label>Niños</label>
+                    <select id="children">
+                        <option value="0" selected>0 niños</option>
+                        <option value="1">1 niño</option>
+                        <option value="2">2 niños</option>
+                        <option value="3">3 niños</option>
+                    </select>
+                </div>
+                <button id="search-btn" class="btn-primary" onclick="performSearch()">Buscar Disponibilidad</button>
+            </div>
+        </section>
 
-return(
-<div className="h-screen flex flex-col">
+        <!-- Sección Quiénes Somos -->
+        <section class="about-section" id="quienes-somos">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Quiénes Somos</h2>
+                    <p>En <strong>Morada Luna</strong> nos especializamos en ofrecer experiencias de alojamiento únicas y memorables en la Ciudad de México. Con años de experiencia en la industria hotelera, hemos creado espacios que combinan comodidad, estilo y la auténtica calidez mexicana.</p>
+                    <p>Nuestro equipo está comprometido con brindar un servicio personalizado, asegurando que cada huésped se sienta como en casa mientras explora los maravillosos rincones de la CDMX.</p>
+                    <p>Creemos que un buen alojamiento puede transformar un viaje en una experiencia inolvidable. Por eso, cada propiedad Morada Luna está cuidadosamente diseñada y equipada para superar tus expectativas.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://moradaluna.com.mx/wp-content/uploads/2024/12/Cuarto-1.jpg" alt="Habitación Morada Luna">
+                </div>
+            </div>
+        </section>
 
-<header className="p-3 flex items-center gap-3 border-b border-slate-800">
-<img src="https://i.ibb.co/8LNH1SBm/Chat-GPT-Image-6-ene-2026-11-20-07-a-m.png" className="w-10 h-10 rounded-xl"/>
-<div className="font-bold text-accent">Radio Arturo</div>
-</header>
+        <!-- Sección de Servicios Minimalista -->
+        <section class="services-section" id="servicios">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <p class="section-subtitle">Todo lo que necesitas para una estancia perfecta en la Ciudad de México</p>
+            
+            <div class="services-grid-minimal">
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>WiFi de Alta Velocidad</h4>
+                        <p>Conexión rápida en todas las propiedades</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Cocina Equipada</h4>
+                        <p>Electrodomésticos y utensilios completos</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>TV y Entretenimiento</h4>
+                        <p>Smart TV con plataformas de streaming</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Recepción 24/7</h4>
+                        <p>Asistencia disponible todo el día</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-suitcase"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Consigna de Equipajes</h4>
+                        <p>Almacenamiento seguro gratuito</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Lavandería</h4>
+                        <p>Servicio por peso disponible</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-broom"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Limpieza Opcional</h4>
+                        <p>Servicios adicionales bajo solicitud</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Transporte</h4>
+                        <p>Apoyo con Uber, Didi y recomendaciones</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-map-signs"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Excursiones</h4>
+                        <p>Información y reservación de tours</p>
+                    </div>
+                </div>
+                
+                <div class="service-item">
+                    <div class="service-icon-mini">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <div class="service-info">
+                        <h4>Sala de Estar</h4>
+                        <p>Espacios cómodos para relajarte</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div className="p-3">
-<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Buscar estación..."
-className="w-full p-3 rounded bg-slate-900 text-white"/>
-</div>
+        <!-- Sección de Reseñas -->
+        <section class="reviews-section" id="reseñas">
+            <h2 class="section-title">Lo que dicen nuestros huéspedes</h2>
+            <p class="section-subtitle">Nuestras Últimas 6 Reseñas</p>
+            
+            <div class="reviews-grid-container">
+                <div class="reviews-grid" id="reviewsGrid">
+                    <!-- Las reseñas se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+        </section>
 
-<div className="flex-1 overflow-auto px-3 space-y-3">
-{stations.filter(s=>s.name.toLowerCase().includes(search.toLowerCase())).map(s=>(
-<div key={s.stationuuid} className="flex items-center gap-3 bg-slate-900 p-3 rounded-xl">
-<img src={s.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"} className="w-12 h-12 rounded"/>
-<div onClick={()=>play(s)} className="flex-1 cursor-pointer">
-<div className="truncate font-semibold">{s.name}</div>
-<div className="text-xs text-slate-400">{s.country}</div>
-</div>
-</div>
-))}
-</div>
+        <!-- Sección Explora CDMX -->
+        <section class="explore-section" id="explora-cdmx">
+            <div class="explore-container">
+                <h2 class="section-title">Explora la Ciudad de México</h2>
+                <p class="section-subtitle">Descubre los lugares más emblemáticos y vivas la cultura mexicana durante tu estancia.</p>
+                
+                <div class="explore-grid">
+                    <!-- Tarjeta 1: Centro Histórico -->
+                    <div class="attraction-card">
+                        <img src="https://media.cntraveler.com/photos/5a92f25dc6516a534a5304e9/master/w_1024%2Cc_limit/Metropolitan-Cathedral_GettyImages-115006326.jpg" 
+                             alt="Centro Histórico" class="attraction-image">
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <h3>Centro Histórico</h3>
+                                <button class="attraction-toggle-btn" onclick="toggleAttractionInfo(this)">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="attraction-info">
+                                <p>Conoce la vibrante historia de Ciudad de México a través del Zócalo, la Catedral Metropolitana y el Palacio de Bellas Artes. Descubre sus museos, plazas y arquitectura colonial.</p>
+                                <span class="attraction-tag">Historia y Cultura</span>
+                                <div class="attraction-actions">
+                                    <button class="btn-visit" onclick="window.open('https://maps.app.goo.gl/xT7tjaAPmsKpJy3e8', '_blank')">
+                                        Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarjeta 2: Chapultepec -->
+                    <div class="attraction-card">
+                        <img src="https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2019/08/13235022/chapultepec-mexico-002.jpg" 
+                             alt="Chapultepec" class="attraction-image">
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <h3>Parque de Chapultepec</h3>
+                                <button class="attraction-toggle-btn" onclick="toggleAttractionInfo(this)">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="attraction-info">
+                                <p>Descubre la belleza del Bosque de Chapultepec y conoce la historia de México en el magnífico Castillo de Chapultepec. El parque urbano más grande de Latinoamérica.</p>
+                                <span class="attraction-tag">Naturaleza e Historia</span>
+                                <div class="attraction-actions">
+                                    <button class="btn-visit" onclick="window.open('https://share.google/I69mklEhWdlmedbIP', '_blank')">
+                                        Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarjeta 3: Museo Frida Kahlo -->
+                    <div class="attraction-card">
+                        <img src="https://media.admagazine.com/photos/62dad7efef35b9d5f2a98871/16:9/w_2560%2Cc_limit/GettyImages-1125944655.jpg" 
+                             alt="Frida Kahlo" class="attraction-image">
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <h3>Museo Frida Kahlo</h3>
+                                <button class="attraction-toggle-btn" onclick="toggleAttractionInfo(this)">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="attraction-info">
+                                <p>Descubre la Casa Azul de Coyoacán, el antiguo hogar de Frida Kahlo. Explora su arte, su vida y el lugar donde floreció su creatividad. Un espacio íntimo y fascinante.</p>
+                                <span class="attraction-tag">Arte y Cultura</span>
+                                <div class="attraction-actions">
+                                    <button class="btn-visit" onclick="window.open('https://share.google/qPf6okZBEFCPALFok', '_blank')">
+                                        Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarjeta 4: La Roma y Condesa -->
+                    <div class="attraction-card">
+                        <img src="https://mex-best.mx/wp-content/uploads/2025/07/21_ROMA-1536x1024-1.jpg" 
+                             alt="La Roma" class="attraction-image">
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <h3>La Roma y La Condesa</h3>
+                                <button class="attraction-toggle-btn" onclick="toggleAttractionInfo(this)">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="attraction-info">
+                                <p>Saborea los sabores mexicanos modernos y tradicionales en los barrios de moda de La Roma y La Condesa. Desde tacos callejeros hasta platos gourmet, cada rincón es un paraíso foodie.</p>
+                                <span class="attraction-tag">Gastronomía y Vida Nocturna</span>
+                                <div class="attraction-actions">
+                                    <button class="btn-visit" onclick="searchGoogle('La Roma Condesa Ciudad de México restaurantes bares')">
+                                        Buscar en Google <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarjeta 5: Teotihuacán -->
+                    <div class="attraction-card">
+                        <img src="https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/79D9/production/_99739113_gettyimages-73656849.jpg.webp" 
+                             alt="Teotihuacán" class="attraction-image">
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <h3>Teotihuacán</h3>
+                                <button class="attraction-toggle-btn" onclick="toggleAttractionInfo(this)">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="attraction-info">
+                                <p>A una hora de la ciudad, maravíllate con las imponentes pirámides del Sol y la Luna. Camina por la Calzada de los Muertos y descubre los secretos de esta antigua ciudad prehispánica.</p>
+                                <span class="attraction-tag">Arqueología y Aventura</span>
+                                <div class="attraction-actions">
+                                    <button class="btn-visit" onclick="window.open('https://share.google/uyoswKtnNAfayxnBE', '_blank')">
+                                        Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarjeta 6: Xochimilco -->
+                    <div class="attraction-card">
+                        <img src="https://github.com/Turomexico/MoradaLuna/blob/main/Xochimilco%201.jpg?raw=true" 
+                             alt="Xochimilco" class="attraction-image">
+                        <div class="attraction-content">
+                            <div class="attraction-header">
+                                <h3>Xochimilco</h3>
+                                <button class="attraction-toggle-btn" onclick="toggleAttractionInfo(this)">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            <div class="attraction-info">
+                                <p>Navega por los coloridos canales en una trajinera tradicional, disfruta de música mariachi y comida típica. Este Patrimonio de la Humanidad es una experiencia única de tradición mexicana.</p>
+                                <span class="attraction-tag">Tradición y Naturaleza</span>
+                                <div class="attraction-actions">
+                                    <button class="btn-visit" onclick="window.open('https://share.google/SX4M3FbP8cKQTjyW3', '_blank')">
+                                        Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 3rem;">
+                    <p style="color: #666; font-size: 1.1rem; max-width: 800px; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-lightbulb" style="color: #4a6fa5; margin-right: 10px;"></i>
+                        <strong>Tip de Morada Luna:</strong> Haz clic en el botón de cada lugar para ver más información y opciones.
+                    </p>
+                    <a href="https://wa.me/5215511406820?text=¡Hola! Necesito recomendaciones para mi viaje a CDMX" 
+                       class="btn-visit" target="_blank" style="text-decoration: none;">
+                        Solicitar Recomendaciones Personalizadas
+                    </a>
+                </div>
+            </div>
+        </section>
 
-{/* Player */}
-<div className="p-4 bg-slate-900/80 backdrop-blur-xl border-t border-cyan-500/20">
-{current && <audio ref={audioRef} src={current.url_resolved} crossOrigin="anonymous"/>}
+        <!-- Sección de propiedades simplificada -->
+        <section class="properties-section" id="propiedades">
+            <h2 class="section-title">Nuestros Alojamientos</h2>
+            
+            <div id="properties-grid" class="properties-grid">
+                <!-- Propiedad 1: Morada Luna Condesa -->
+                <div class="property-card-simple">
+                    <img src="https://moradaluna.com.mx/wp-content/uploads/2024/06/header-2.jpg" alt="Morada Luna Condesa">
+                    <div class="property-content-simple">
+                        <h3>Morada Luna Condesa</h3>
+                        <button class="btn-visit" onclick="openWhatsApp('Morada Luna Condesa')">Reservar</button>
+                    </div>
+                </div>
 
-<div className="flex flex-col items-center">
+                <!-- Propiedad 2: Morada Luna Roma Norte -->
+                <div class="property-card-simple">
+                    <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1270521288480613949/original/9a10b18c-7b51-4fb1-82b0-1923e0d799ea.jpeg?im_w=720" alt="Morada Luna Roma Norte">
+                    <div class="property-content-simple">
+                        <h3>Morada Luna Roma Norte</h3>
+                        <button class="btn-visit" onclick="openWhatsApp('Morada Luna Roma Norte')">Reservar</button>
+                    </div>
+                </div>
 
-<div className="relative mb-3">
-<img src={current?.favicon||"https://upload.wikimedia.org/wikipedia/commons/8/84/Radio_icon.png"}
-className={`w-20 h-20 rounded-full border-2 border-accent ${playing?"animate-spin-slow":""}`}/>
-<div className="absolute inset-0 blur-xl bg-cyan-400 opacity-30 rounded-full"></div>
-</div>
+                <!-- Propiedad 3: Morada Luna Polanco -->
+                <div class="property-card-simple">
+                    <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/486455253.jpg?k=c2375c97db0bc4ecaf43539ffa81d27ba853e321fa5945818b5880081d49b428&o=" alt="Morada Luna Polanco">
+                    <div class="property-content-simple">
+                        <h3>Morada Luna Polanco</h3>
+                        <button class="btn-visit" onclick="openWhatsApp('Morada Luna Polanco')">Reservar</button>
+                    </div>
+                </div>
 
-<div className="font-bold truncate">{current?.name||"Selecciona una estación"}</div>
+                <!-- Propiedad 4: Morada Luna Coyoacán -->
+                <div class="property-card-simple">
+                    <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/769863284.jpg?k=3c56d2b0ff1ec71645aa88cc2b5e5aee0b988d2ba7407ca44d761c594897bfb2&o=" alt="Morada Luna Coyoacán">
+                    <div class="property-content-simple">
+                        <h3>Morada Luna Coyoacán</h3>
+                        <button class="btn-visit" onclick="openWhatsApp('Morada Luna Coyoacán')">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-<button onClick={()=>{playing?audioRef.current.pause():audioRef.current.play();setPlaying(!playing)}}
-className="mt-3 p-4 rounded-full bg-accent text-black text-xl shadow-xl">
-<i className={`ph ${playing?"ph-pause":"ph-play"}`}></i>
-</button>
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="https://github.com/Turomexico/MoradaLuna/blob/main/Captura%20de%20pantalla%202026-01-12%20105656.png?raw=true" 
+                     alt="Logo Morada Luna" class="logo" onclick="window.open('https://moradaluna.com.mx/', '_blank')">
+                <p style="color: #ddd; line-height: 1.6;">Tu refugio perfecto bajo la luna. Ofrecemos experiencias únicas de alojamiento en los mejores destinos de México.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#quienes-somos">Quiénes Somos</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#reseñas">Reseñas</a></li>
+                    <li><a href="#explora-cdmx">Explora CDMX</a></li>
+                    <li><a href="#propiedades">Propiedades</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>Contacto</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Teléfono: 55 1140 6820</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp: 55 1140 6820</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email: info@moradaluna.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ciudad de México, México</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <p style="color: #ddd; margin-bottom: 1rem;">Síguenos en nuestras redes sociales para ofertas especiales y novedades.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/hotelitomoradaluna/" target="_blank" title="Instagram" class="instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/p/Morada-Luna-100054492428152/?locale=es_LA" target="_blank" title="Facebook" class="facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://wa.me/5215511406820" target="_blank" title="WhatsApp" class="whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.airbnb.mx/rooms/1259085572925875795?source_impression_id=p3_1768249398_P3B3kTJxYVvlJOVu" 
+                       target="_blank" 
+                       title="Airbnb"
+                       class="airbnb">
+                        <i class="fab fa-airbnb"></i>
+                    </a>
+                    <a href="https://wa.me/2225165117?text=¡Hola! Necesito soporte técnico para Morada Luna" 
+                       target="_blank" 
+                       title="Soporte Técnico"
+                       class="tech-support">
+                        <i class="fas fa-tools"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Morada Luna una empresa de Hospedaje. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
-<canvas ref={canvasRef} width="280" height="120" className="mt-4 w-full max-w-xs"></canvas>
+    <script>
+        // Datos de las reseñas con URLs de avatares de IA
+        const reviews = [
+            {
+                name: "Alvaro",
+                stars: 5,
+                date: "Hace 1 semana",
+                text: "Todo fue excelente durante mi estancia, muy limpio y cómodo. Isabel en todo momento fue una excelente Anfitriona, muy atenta a nuestras necesidades.",
+                highlight: "Anfitriona excepcional y ubicación perfecta",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alvaro&backgroundColor=4a6fa5"
+            },
+            {
+                name: "Alejandro",
+                stars: 5,
+                date: "noviembre 2025",
+                text: "Excelente lugar para quedarse, en muy buena zona y con un gran anfitrión. La comunicación fue excelente y el lugar muy limpio y acogedor.",
+                highlight: "Ubicación perfecta cerca de todo",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alejandro&backgroundColor=4a6fa5"
+            },
+            {
+                name: "Pierina",
+                stars: 5,
+                date: "octubre 2025",
+                text: "Me encantó, todo perfecto. El Internet es rápido para home office. El departamento está muy bien equipado y la atención fue excepcional.",
+                highlight: "Ideal para trabajo remoto",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Pierina&backgroundColor=4a6fa5"
+            },
+            {
+                name: "María",
+                stars: 5,
+                date: "septiembre 2025",
+                text: "Muy buena ubicación, el departamento está limpio y cómodo. El anfitrión siempre estuvo atento a nuestras necesidades. Definitivamente volvería.",
+                highlight: "Anfitrión siempre atento",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria&backgroundColor=4a6fa5"
+            },
+            {
+                name: "Carlos",
+                stars: 5,
+                date: "agosto 2025",
+                text: "Excelente experiencia, todo impecable para conocer la ciudad. La ubicación es ideal para turistear. Recomendado 100%.",
+                highlight: "Todo superó mis expectativas",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos&backgroundColor=4a6fa5"
+            },
+            {
+                name: "Fernanda",
+                stars: 5,
+                date: "julio 2025",
+                text: "Increíble experiencia desde el check-in hasta el check-out. El departamento es exactamente como se ve en las fotos. Muy cómodo y bien ubicado.",
+                highlight: "Experiencia perfecta de principio a fin",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fernanda&backgroundColor=4a6fa5"
+            }
+        ];
 
-<input type="range" min="0" max="1" step="0.01" onChange={e=>audioRef.current.volume=e.target.value}
-className="w-full max-w-xs mt-3 accent-cyan-400"/>
+        // Variables globales
+        let currentSearch = {
+            location: '',
+            checkIn: '2026-02-05',
+            checkOut: '2026-02-09',
+            adults: 2,
+            children: 0
+        };
 
-</div>
-</div>
+        // Variables para slideshow
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        let slideInterval;
 
-<div className="text-center text-xs p-2 text-slate-400">
-Realizado por Arturo T.
-</div>
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            setDefaultDates();
+            setupEventListeners();
+            startSlideshow();
+            setupWhatsAppModal();
+            setupFIFAModal();
+            initReviewsGrid();
+            initAttractionCards();
+            
+            // Suavizar scroll a las secciones
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
 
-</div>
-)
-}
+        // Configurar modal de WhatsApp
+        function setupWhatsAppModal() {
+            const whatsappButton = document.getElementById('whatsappButton');
+            const whatsappModal = document.getElementById('whatsappModal');
+            const closeModal = document.getElementById('closeModal');
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
-</script>
+            // Abrir modal al hacer clic en el botón de WhatsApp
+            whatsappButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                whatsappModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Cerrar modal
+            closeModal.addEventListener('click', function() {
+                whatsappModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            whatsappModal.addEventListener('click', function(e) {
+                if (e.target === whatsappModal) {
+                    whatsappModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Configurar modal FIFA 2026™
+        function setupFIFAModal() {
+            const fifaBtn = document.getElementById('fifaBtn');
+            const fifaModal = document.getElementById('fifaModal');
+            const closeFifa = document.getElementById('closeFifa');
+
+            // Abrir modal al hacer clic en el botón FIFA
+            fifaBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                fifaModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Cerrar modal
+            closeFifa.addEventListener('click', function() {
+                fifaModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            fifaModal.addEventListener('click', function(e) {
+                if (e.target === fifaModal) {
+                    fifaModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Inicializar cuadrícula de reseñas
+        function initReviewsGrid() {
+            const reviewsGrid = document.getElementById('reviewsGrid');
+            
+            // Agregar solo las 6 reseñas a la cuadrícula
+            reviews.forEach((review, index) => {
+                const reviewCard = createReviewCardGrid(review, index);
+                reviewsGrid.appendChild(reviewCard);
+            });
+        }
+
+        // Inicializar tarjetas de atracciones
+        function initAttractionCards() {
+            // Asegurarse de que todas las tarjetas empiecen cerradas
+            document.querySelectorAll('.attraction-info').forEach(info => {
+                info.style.maxHeight = '0';
+                info.style.opacity = '0';
+            });
+        }
+
+        // Crear tarjeta de reseña para cuadrícula
+        function createReviewCardGrid(review, index) {
+            const reviewCard = document.createElement('div');
+            reviewCard.className = 'review-card-grid';
+            reviewCard.dataset.index = index;
+            
+            // Crear estrellas
+            let starsHtml = '';
+            for (let i = 0; i < review.stars; i++) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            }
+            
+            reviewCard.innerHTML = `
+                <div class="reviewer-info-grid">
+                    <div class="reviewer-avatar-grid">
+                        <img src="${review.avatar}" alt="${review.name}">
+                    </div>
+                    <div class="reviewer-details-grid">
+                        <div class="reviewer-name-grid">${review.name}</div>
+                        <div class="stars-grid">${starsHtml}</div>
+                        <div class="review-date-grid">${review.date}</div>
+                    </div>
+                </div>
+                <div class="review-text-grid">"${review.text}"</div>
+                <div class="review-highlight-grid">${review.highlight}</div>
+            `;
+            
+            return reviewCard;
+        }
+
+        // Función para expandir/contraer información de atracciones
+        function toggleAttractionInfo(button) {
+            const attractionCard = button.closest('.attraction-card');
+            const attractionInfo = attractionCard.querySelector('.attraction-info');
+            const icon = button.querySelector('i');
+            
+            // Alternar clase expanded
+            attractionInfo.classList.toggle('expanded');
+            button.classList.toggle('expanded');
+            
+            // Cambiar icono
+            if (attractionInfo.classList.contains('expanded')) {
+                icon.className = 'fas fa-chevron-up';
+                // Aplicar estilos de expansión
+                attractionInfo.style.maxHeight = '500px';
+                attractionInfo.style.opacity = '1';
+                attractionInfo.style.marginTop = '1rem';
+                
+                // Scroll suave para ver más contenido
+                setTimeout(() => {
+                    attractionCard.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest'
+                    });
+                }, 300);
+            } else {
+                icon.className = 'fas fa-chevron-down';
+                // Aplicar estilos de contracción
+                attractionInfo.style.maxHeight = '0';
+                attractionInfo.style.opacity = '0';
+                attractionInfo.style.marginTop = '0';
+            }
+        }
+
+        // Función para reservar con animación de fútbol
+        function reserveWithFIFAAnimation() {
+            const fifaModal = document.getElementById('fifaModal');
+            const fifaBody = document.querySelector('.fifa-body');
+            
+            // Crear overlay de animación
+            const animationOverlay = document.createElement('div');
+            animationOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, #0033a0, #ce1126);
+                z-index: 2001;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-family: 'Inter', sans-serif;
+            `;
+            
+            // Agregar contenido de animación
+            animationOverlay.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">
+                        ⚽ 🏆 🌎
+                    </div>
+                    <h2 style="font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                        FIFA 2026™
+                    </h2>
+                    <p style="font-size: 1.5rem; margin-bottom: 2rem; max-width: 600px;">
+                        ¡Preparando tu experiencia para el Mundial en México!
+                    </p>
+                    <div style="width: 80px; height: 80px; border: 5px solid white; 
+                                border-radius: 50%; border-top-color: transparent;
+                                animation: spin 1s linear infinite;"></div>
+                    <p style="margin-top: 2rem; font-size: 1.2rem;">
+                        Redirigiendo a WhatsApp en 3 segundos...
+                    </p>
+                </div>
+            `;
+            
+            // Agregar estilos para la animación
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Insertar la animación
+            document.body.appendChild(animationOverlay);
+            
+            // Deshabilitar scroll
+            document.body.style.overflow = 'hidden';
+            
+            // Esperar 3 segundos antes de redirigir
+            setTimeout(() => {
+                // Remover animación
+                document.body.removeChild(animationOverlay);
+                document.head.removeChild(style);
+                
+                // Restaurar scroll
+                document.body.style.overflow = 'auto';
+                
+                // Cerrar modal FIFA
+                fifaModal.style.display = 'none';
+                
+                // Abrir WhatsApp
+                const message = encodeURIComponent('¡Hola! Me interesa reservar mi estancia para el Mundial FIFA 2026 en Morada Luna. ¿Podrían ayudarme con más información?');
+                window.open(`https://wa.me/5215511406820?text=${message}`, '_blank');
+            }, 3000);
+        }
+
+        // Slideshow functions
+        function startSlideshow() {
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlide();
+        }
+
+        function updateSlide() {
+            // Remove active class from all slides and indicators
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            // Add active class to current slide and indicator
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+        }
+
+        // Add click events to indicators
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlide();
+                // Reset interval
+                clearInterval(slideInterval);
+                startSlideshow();
+            });
+        });
+
+        // WhatsApp functions
+        function openWhatsApp(propertyName) {
+            const message = encodeURIComponent(`¡Hola! Estoy interesado en la propiedad "${propertyName}". ¿Podrían darme más información sobre disponibilidad?`);
+            window.open(`https://wa.me/5215511406820?text=${message}`, '_blank');
+        }
+
+        // Función para búsqueda en Google con IA
+        function searchGoogle(query) {
+            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            window.open(searchUrl, '_blank');
+        }
+
+        function setDefaultDates() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            // Formatear fechas para input type="date"
+            const formatDate = (date) => date.toISOString().split('T')[0];
+            
+            document.getElementById('checkin-date').value = formatDate(today);
+            document.getElementById('checkout-date').value = formatDate(tomorrow);
+            
+            currentSearch.checkIn = formatDate(today);
+            currentSearch.checkOut = formatDate(tomorrow);
+        }
+
+        function setupEventListeners() {
+            // Actualizar ubicación
+            document.getElementById('location').addEventListener('change', function(e) {
+                currentSearch.location = e.target.value;
+            });
+            
+            // Actualizar check-out mínimo cuando cambia check-in
+            document.getElementById('checkin-date').addEventListener('change', function(e) {
+                currentSearch.checkIn = e.target.value;
+                
+                // Establecer mínimo para check-out
+                const checkoutInput = document.getElementById('checkout-date');
+                const minDate = new Date(e.target.value);
+                minDate.setDate(minDate.getDate() + 1);
+                checkoutInput.min = minDate.toISOString().split('T')[0];
+                
+                // Si check-out es anterior al nuevo mínimo, resetear
+                if (checkoutInput.value && new Date(checkoutInput.value) <= new Date(e.target.value)) {
+                    checkoutInput.value = '';
+                    currentSearch.checkOut = '';
+                }
+            });
+            
+            document.getElementById('checkout-date').addEventListener('change', function(e) {
+                currentSearch.checkOut = e.target.value;
+            });
+            
+            document.getElementById('adults').addEventListener('change', function(e) {
+                currentSearch.adults = parseInt(e.target.value);
+            });
+            
+            document.getElementById('children').addEventListener('change', function(e) {
+                currentSearch.children = parseInt(e.target.value);
+            });
+        }
+
+        function performSearch() {
+            const location = document.getElementById('location').value;
+            const checkIn = document.getElementById('checkin-date').value;
+            const checkOut = document.getElementById('checkout-date').value;
+            const adults = parseInt(document.getElementById('adults').value);
+            const children = parseInt(document.getElementById('children').value);
+            const searchBtn = document.getElementById('search-btn');
+            
+            // Validaciones
+            if (!location) {
+                alert('Por favor, selecciona una ubicación');
+                return;
+            }
+            
+            if (!checkIn || !checkOut) {
+                alert('Por favor, selecciona fechas de check-in y check-out');
+                return;
+            }
+            
+            if (new Date(checkIn) >= new Date(checkOut)) {
+                alert('La fecha de check-out debe ser posterior al check-in');
+                return;
+            }
+            
+            currentSearch = { location, checkIn, checkOut, adults, children };
+            
+            // Formatear fecha para mostrar
+            function formatDateForDisplay(dateStr) {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            }
+            
+            // Crear mensaje para WhatsApp
+            let message = `¡Hola! Me gustaría consultar disponibilidad:\n\n`;
+            message += `📍 *Ubicación:* ${location}\n`;
+            message += `📅 *Ingreso:* ${formatDateForDisplay(checkIn)}\n`;
+            message += `📅 *Salida:* ${formatDateForDisplay(checkOut)}\n`;
+            message += `👨‍👩‍👧‍👦 *Personas:* ${adults} ${adults === 1 ? 'Adulto' : 'Adultos'}`;
+            
+            if (children > 0) {
+                message += `\n👶 *Niños:* ${children} ${children === 1 ? 'Niño' : 'Niños'}`;
+            }
+            
+            message += `\n\n¿Podrían ayudarme con la disponibilidad?`;
+            
+            // Agregar animación de búsqueda
+            searchBtn.classList.add('searching');
+            searchBtn.disabled = true;
+            searchBtn.innerHTML = 'Buscando...';
+            
+            // Simular búsqueda con animación
+            setTimeout(() => {
+                // Restaurar botón
+                searchBtn.classList.remove('searching');
+                searchBtn.disabled = false;
+                searchBtn.innerHTML = 'Buscar Disponibilidad';
+                
+                // Abrir WhatsApp con el mensaje formateado
+                window.open(`https://wa.me/5215511406820?text=${encodeURIComponent(message)}`, '_blank');
+            }, 4000); // 4 segundos de animación
+        }
+    </script>
 </body>
 </html>
