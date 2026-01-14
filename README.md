@@ -1,3 +1,1 @@
-Arturo Radio
-
-Pruebas de radio.
+Probando Agente Nova IA.
