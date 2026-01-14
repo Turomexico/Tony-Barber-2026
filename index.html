@@ -59,7 +59,6 @@
             font-weight: 800;
             color: #4a6fa5;
             font-family: 'Poppins', sans-serif;
-            /* Texto movido más a la derecha */
             margin-left: 1.5rem;
         }
 
@@ -68,6 +67,7 @@
             list-style: none;
             gap: 1.5rem;
             font-family: 'Inter', sans-serif;
+            align-items: center;
         }
 
         .nav-links a {
@@ -99,7 +99,7 @@
             width: 100%;
         }
 
-        /* Nuevo botón FIFA 2026™ */
+        /* Botón FIFA 2026™ corregido */
         .nav-links .fifa-btn {
             background: linear-gradient(45deg, #0033a0, #ce1126);
             color: white !important;
@@ -108,11 +108,17 @@
             font-weight: 700;
             animation: fifaPulse 3s infinite;
             font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
         }
 
         .nav-links .fifa-btn:hover {
             background: linear-gradient(45deg, #002080, #a00d1e);
             transform: scale(1.05);
+            text-decoration: none;
         }
 
         .nav-links .fifa-btn::after {
@@ -384,21 +390,21 @@
 
         /* Search section - Más pequeño */
         .search-section {
-            max-width: 1000px; /* Reducido de 1200px */
-            margin: -30px auto 2rem; /* Reducido de -50px */
-            padding: 0 1.5rem; /* Reducido de 2rem */
+            max-width: 1000px;
+            margin: -30px auto 2rem;
+            padding: 0 1.5rem;
             position: relative;
             z-index: 10;
         }
 
         .search-box {
             background: white;
-            border-radius: 12px; /* Reducido de 15px */
-            padding: 1.5rem; /* Reducido de 2rem */
+            border-radius: 12px;
+            padding: 1.5rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reducido de 200px */
-            gap: 1rem; /* Reducido de 1.5rem */
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12); /* Reducido de 30px */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
 
         .search-input {
@@ -408,17 +414,17 @@
 
         .search-input label {
             color: #666;
-            font-size: 0.85rem; /* Reducido de 0.9rem */
-            margin-bottom: 0.4rem; /* Reducido de 0.5rem */
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
             font-weight: 600;
         }
 
         .search-input input,
         .search-input select {
-            padding: 0.7rem; /* Reducido de 0.9rem */
+            padding: 0.7rem;
             border: 1px solid #ddd;
-            border-radius: 6px; /* Reducido de 8px */
-            font-size: 0.9rem; /* Reducido de 1rem */
+            border-radius: 6px;
+            font-size: 0.9rem;
             transition: border-color 0.3s;
             font-family: 'Inter', sans-serif;
         }
@@ -433,9 +439,9 @@
             background-color: #ff5a5f;
             color: white;
             border: none;
-            padding: 0.8rem 1.5rem; /* Reducido de 1rem 2rem */
-            border-radius: 6px; /* Reducido de 8px */
-            font-size: 0.9rem; /* Reducido de 1rem */
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -487,7 +493,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        /* Sección de servicios */
+        /* Sección de servicios - MODIFICADA: Cuadros uno sobre otro */
         .services-section {
             max-width: 1200px;
             margin: 4rem auto;
@@ -514,51 +520,59 @@
             font-weight: 400;
         }
 
-        .services-grid-minimal {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
+        /* SERVICIOS EN COLUMNA VERTICAL - CORREGIDO */
+        .services-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .service-item {
+        .service-item-vertical {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1.2rem;
+            gap: 1.5rem;
+            padding: 1.2rem 1.5rem;
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
         }
 
-        .service-item:hover {
+        .service-item-vertical:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
 
-        .service-icon-mini {
-            width: 45px;
-            height: 45px;
+        .service-icon-vertical {
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #4a6fa5, #6d9dc5);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             flex-shrink: 0;
         }
 
-        .service-info h4 {
+        .service-info-vertical {
+            flex-grow: 1;
+        }
+
+        .service-info-vertical h4 {
             color: #333;
             margin-bottom: 0.3rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
         }
 
-        .service-info p {
+        .service-info-vertical p {
             color: #666;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             line-height: 1.4;
             font-weight: 400;
         }
@@ -1390,7 +1404,7 @@
             font-weight: 400;
         }
 
-        /* Chatbot Styles */
+        /* Chatbot Styles - NOVABOT - MODIFICADO */
         .chatbot-container {
             position: fixed;
             bottom: 20px;
@@ -1413,6 +1427,7 @@
             box-shadow: 0 4px 15px rgba(74, 111, 165, 0.4);
             transition: all 0.3s ease;
             animation: chatbotPulse 3s infinite;
+            overflow: hidden;
         }
 
         @keyframes chatbotPulse {
@@ -1428,6 +1443,24 @@
             transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(74, 111, 165, 0.6);
             animation: none;
+        }
+
+        /* Imagen del chatbot ajustada al tamaño del círculo */
+        .chatbot-toggle .chatbot-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chatbot-toggle .chatbot-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
         }
 
         .chatbot-window {
@@ -1457,6 +1490,21 @@
             margin: 0;
             font-size: 1.2rem;
             font-weight: 600;
+        }
+
+        .chatbot-header .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+            border: 2px solid white;
+        }
+
+        .chatbot-header .chatbot-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .close-chatbot {
@@ -1635,6 +1683,54 @@
             }
         }
 
+        /* Calendar Styles */
+        .calendar-popup {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .calendar-day:hover {
+            background-color: #f0f0f0;
+        }
+
+        .calendar-day.selected {
+            background-color: #4a6fa5;
+            color: white;
+        }
+
+        .calendar-nav {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
         /* Estilo para el spinner de FIFA centrado */
         .fifa-spinner {
             position: absolute;
@@ -1652,6 +1748,72 @@
         @keyframes spin {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Opciones de selección visual para el chatbot */
+        .visual-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .visual-option {
+            background: #f0f7ff;
+            border: 2px solid #4a6fa5;
+            color: #4a6fa5;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .visual-option:hover {
+            background: #4a6fa5;
+            color: white;
+        }
+
+        .visual-option.selected {
+            background: #4a6fa5;
+            color: white;
+            border-color: #3a5a8a;
+        }
+
+        /* Número de personas - opciones circulares */
+        .people-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .people-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f7ff;
+            border: 2px solid #4a6fa5;
+            color: #4a6fa5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .people-option:hover {
+            background: #4a6fa5;
+            color: white;
+        }
+
+        .people-option.selected {
+            background: #4a6fa5;
+            color: white;
+            border-color: #3a5a8a;
+            transform: scale(1.1);
         }
 
         /* Responsive */
@@ -1722,7 +1884,6 @@
             }
             
             .properties-grid,
-            .services-grid-minimal,
             .explore-grid {
                 grid-template-columns: 1fr;
             }
@@ -1774,6 +1935,19 @@
             .chatbot-container {
                 left: 50%;
                 transform: translateX(-50%);
+            }
+            
+            /* Ajustes para servicios vertical en móvil */
+            .services-vertical {
+                max-width: 100%;
+            }
+            
+            .service-item-vertical {
+                padding: 1rem;
+            }
+            
+            .visual-options {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -2050,14 +2224,19 @@
         <span class="whatsapp-text">¿Necesitas Ayuda?<br>Chatea con nosotros</span>
     </div>
 
-    <!-- Chatbot Container -->
+    <!-- Chatbot Container - NOVABOT -->
     <div class="chatbot-container" id="chatbotContainer">
         <div class="chatbot-toggle" id="chatbotToggle">
-            <i class="fas fa-robot"></i>
+            <div class="chatbot-avatar">
+                <img src="https://i.ibb.co/chhk675W/arte-vectorial-robots-estilo-dibujos-animados.png" alt="NOVABOT">
+            </div>
         </div>
         <div class="chatbot-window" id="chatbotWindow">
             <div class="chatbot-header">
-                <h3>¡NovaAgent! - Especialista en Reservas</h3>
+                <div class="chatbot-avatar">
+                    <img src="https://i.ibb.co/chhk675W/arte-vectorial-robots-estilo-dibujos-animados.png" alt="NOVABOT">
+                </div>
+                <h3>NOVABOT - Asistente de Reservas</h3>
                 <button class="close-chatbot" id="closeChatbot">&times;</button>
             </div>
             <div class="chatbot-messages" id="chatbotMessages">
@@ -2174,109 +2353,89 @@
             </div>
         </section>
 
-        <!-- Sección de Servicios Minimalista -->
+        <!-- Sección de Servicios - MODIFICADA: Cuadros uno sobre otro -->
         <section class="services-section" id="servicios">
             <h2 class="section-title">Nuestros Servicios</h2>
             <p class="section-subtitle">Todo lo que necesitas para una estancia perfecta en la Ciudad de México</p>
             
-            <div class="services-grid-minimal">
-                <div class="service-item">
-                    <div class="service-icon-mini">
+            <div class="services-vertical">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-wifi"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>WiFi de Alta Velocidad</h4>
                         <p>Conexión rápida en todas las propiedades</p>
                     </div>
                 </div>
                 
-                <div class="service-item">
-                    <div class="service-icon-mini">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-utensils"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>Cocina Equipada</h4>
                         <p>Electrodomésticos y utensilios completos</p>
                     </div>
                 </div>
                 
-                <div class="service-item">
-                    <div class="service-icon-mini">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-tv"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>TV y Entretenimiento</h4>
                         <p>Smart TV con plataformas de streaming</p>
                     </div>
                 </div>
                 
-                <div class="service-item">
-                    <div class="service-icon-mini">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-concierge-bell"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>Recepción 24/7</h4>
                         <p>Asistencia disponible todo el día</p>
                     </div>
                 </div>
                 
-                <div class="service-item">
-                    <div class="service-icon-mini">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-suitcase"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>Consigna de Equipajes</h4>
                         <p>Almacenamiento seguro gratuito</p>
                     </div>
                 </div>
                 
-                <div class="service-item">
-                    <div class="service-icon-mini">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-tshirt"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>Lavandería</h4>
                         <p>Servicio por peso disponible</p>
                     </div>
                 </div>
                 
-                <div class="service-item">
-                    <div class="service-icon-mini">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-broom"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>Limpieza Opcional</h4>
                         <p>Servicios adicionales bajo solicitud</p>
                     </div>
                 </div>
                 
-                <div class="service-item">
-                    <div class="service-icon-mini">
+                <div class="service-item-vertical">
+                    <div class="service-icon-vertical">
                         <i class="fas fa-car"></i>
                     </div>
-                    <div class="service-info">
+                    <div class="service-info-vertical">
                         <h4>Transporte</h4>
                         <p>Apoyo con Uber, Didi y recomendaciones</p>
-                    </div>
-                </div>
-                
-                <div class="service-item">
-                    <div class="service-icon-mini">
-                        <i class="fas fa-map-signs"></i>
-                    </div>
-                    <div class="service-info">
-                        <h4>Excursiones</h4>
-                        <p>Información y reservación de tours</p>
-                    </div>
-                </div>
-                
-                <div class="service-item">
-                    <div class="service-icon-mini">
-                        <i class="fas fa-couch"></i>
-                    </div>
-                    <div class="service-info">
-                        <h4>Sala de Estar</h4>
-                        <p>Espacios cómodos para relajarte</p>
                     </div>
                 </div>
             </div>
@@ -2319,6 +2478,9 @@
                                     <button class="btn-visit" onclick="window.open('https://maps.app.goo.gl/xT7tjaAPmsKpJy3e8', '_blank')">
                                         Ver en Maps <i class="fas fa-external-link-alt"></i>
                                     </button>
+                                    <button class="btn-visit" onclick="searchGoogle('Centro Histórico Ciudad de México atracciones turísticas')">
+                                        Buscar en Google <i class="fas fa-external-link-alt"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2341,6 +2503,9 @@
                                 <div class="attraction-actions">
                                     <button class="btn-visit" onclick="window.open('https://share.google/I69mklEhWdlmedbIP', '_blank')">
                                         Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                    <button class="btn-visit" onclick="searchGoogle('Parque Chapultepec Ciudad de México Castillo museos')">
+                                        Buscar en Google <i class="fas fa-external-link-alt"></i>
                                     </button>
                                 </div>
                             </div>
@@ -2365,6 +2530,9 @@
                                     <button class="btn-visit" onclick="window.open('https://share.google/qPf6okZBEFCPALFok', '_blank')">
                                         Ver en Maps <i class="fas fa-external-link-alt"></i>
                                     </button>
+                                    <button class="btn-visit" onclick="searchGoogle('Museo Frida Kahlo Casa Azul Coyoacán tickets horarios')">
+                                        Buscar en Google <i class="fas fa-external-link-alt"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2385,6 +2553,9 @@
                                 <p>Saborea los sabores mexicanos modernos y tradicionales en los barrios de moda de La Roma y La Condesa. Desde tacos callejeros hasta platos gourmet, cada rincón es un paraíso foodie.</p>
                                 <span class="attraction-tag">Gastronomía y Vida Nocturna</span>
                                 <div class="attraction-actions">
+                                    <button class="btn-visit" onclick="window.open('https://maps.app.goo.gl/xyz', '_blank')">
+                                        Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
                                     <button class="btn-visit" onclick="searchGoogle('La Roma Condesa Ciudad de México restaurantes bares')">
                                         Buscar en Google <i class="fas fa-external-link-alt"></i>
                                     </button>
@@ -2411,6 +2582,9 @@
                                     <button class="btn-visit" onclick="window.open('https://share.google/uyoswKtnNAfayxnBE', '_blank')">
                                         Ver en Maps <i class="fas fa-external-link-alt"></i>
                                     </button>
+                                    <button class="btn-visit" onclick="searchGoogle('Teotihuacán pirámides tours desde Ciudad de México')">
+                                        Buscar en Google <i class="fas fa-external-link-alt"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -2433,6 +2607,9 @@
                                 <div class="attraction-actions">
                                     <button class="btn-visit" onclick="window.open('https://share.google/SX4M3FbP8cKQTjyW3', '_blank')">
                                         Ver en Maps <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                    <button class="btn-visit" onclick="searchGoogle('Xochimilco trajineras canales Ciudad de México tours')">
+                                        Buscar en Google <i class="fas fa-external-link-alt"></i>
                                     </button>
                                 </div>
                             </div>
@@ -2594,12 +2771,18 @@
         let chatbotState = {
             step: 0,
             reservationData: {
-                name: '',
+                firstName: '',
+                lastName: '',
                 location: '',
                 adults: '',
                 children: '',
                 checkIn: '',
                 checkOut: ''
+            },
+            selectedOptions: {
+                location: null,
+                adults: null,
+                children: null
             }
         };
 
@@ -2654,6 +2837,45 @@
                 avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fernanda&backgroundColor=4a6fa5"
             }
         ];
+
+        // Datos de lugares turísticos (usados por el chatbot)
+        const touristAttractions = {
+            'centro histórico': {
+                name: 'Centro Histórico',
+                description: 'El corazón de la ciudad con el Zócalo, la Catedral Metropolitana y el Palacio de Bellas Artes.',
+                googleSearch: 'Centro Histórico Ciudad de México atracciones turísticas'
+            },
+            'chapultepec': {
+                name: 'Parque de Chapultepec',
+                description: 'El parque urbano más grande de Latinoamérica con el Castillo de Chapultepec y varios museos.',
+                googleSearch: 'Parque Chapultepec Ciudad de México Castillo museos'
+            },
+            'frida kahlo': {
+                name: 'Museo Frida Kahlo',
+                description: 'La Casa Azul en Coyoacán, hogar de la famosa artista mexicana Frida Kahlo.',
+                googleSearch: 'Museo Frida Kahlo Casa Azul Coyoacán tickets horarios'
+            },
+            'roma': {
+                name: 'La Roma y La Condesa',
+                description: 'Barrios de moda con excelente gastronomía, bares y vida nocturna.',
+                googleSearch: 'La Roma Condesa Ciudad de México restaurantes bares'
+            },
+            'condesa': {
+                name: 'La Roma y La Condesa',
+                description: 'Barrios de moda con excelente gastronomía, bares y vida nocturna.',
+                googleSearch: 'La Roma Condesa Ciudad de México restaurantes bares'
+            },
+            'teotihuacán': {
+                name: 'Teotihuacán',
+                description: 'Zona arqueológica con las imponentes Pirámides del Sol y la Luna.',
+                googleSearch: 'Teotihuacán pirámides tours desde Ciudad de México'
+            },
+            'xochimilco': {
+                name: 'Xochimilco',
+                description: 'Patrimonio de la Humanidad con paseos en trajinera por los canales.',
+                googleSearch: 'Xochimilco trajineras canales Ciudad de México tours'
+            }
+        };
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
@@ -3038,7 +3260,7 @@
             window.open(`https://wa.me/5215511406820?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // CHATBOT FUNCTIONS
+        // CHATBOT FUNCTIONS - NOVABOT MODIFICADO
         function initChatbot() {
             const chatbotToggle = document.getElementById('chatbotToggle');
             const chatbotWindow = document.getElementById('chatbotWindow');
@@ -3089,13 +3311,13 @@
 
             // Mostrar mensaje de bienvenida
             function showWelcomeMessage() {
-                const welcomeMessage = `¡Hola! Soy NovaAgent, tu asistente especializado en reservas de Morada Luna. Estoy aquí para ayudarte a realizar tu reserva. ¿En qué puedo asistirte hoy?`;
+                const welcomeMessage = `¡Hola! Soy **NOVABOT**, tu asistente especializado en reservas de Morada Luna. Estoy aquí para ayudarte a realizar tu reserva o responder tus preguntas sobre lugares turísticos en CDMX. ¿En qué puedo asistirte hoy?`;
                 
                 const quickOptions = [
                     "Quiero hacer una reserva",
                     "Ver opciones de propiedades",
-                    "Consultar precios",
-                    "Preguntas frecuentes"
+                    "Lugares turísticos en CDMX",
+                    "Información sobre FIFA 2026"
                 ];
 
                 addMessageToChatbot(welcomeMessage, 'bot');
@@ -3135,6 +3357,95 @@
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             }
 
+            function showVisualOptions(options, type) {
+                const visualOptionsDiv = document.createElement('div');
+                visualOptionsDiv.className = 'visual-options';
+                
+                options.forEach(option => {
+                    const optionBtn = document.createElement('button');
+                    optionBtn.className = 'visual-option';
+                    optionBtn.textContent = option;
+                    optionBtn.addEventListener('click', () => {
+                        // Remover selección anterior
+                        visualOptionsDiv.querySelectorAll('.visual-option').forEach(btn => {
+                            btn.classList.remove('selected');
+                        });
+                        
+                        // Seleccionar opción actual
+                        optionBtn.classList.add('selected');
+                        
+                        // Guardar selección
+                        if (type === 'location') {
+                            chatbotState.selectedOptions.location = option;
+                            chatbotState.reservationData.location = option;
+                        }
+                        
+                        // Enviar mensaje después de breve delay
+                        setTimeout(() => {
+                            addMessageToChatbot(option, 'user');
+                            processChatbotResponse(option);
+                        }, 300);
+                    });
+                    
+                    // Seleccionar opción si ya estaba seleccionada antes
+                    if (type === 'location' && chatbotState.selectedOptions.location === option) {
+                        optionBtn.classList.add('selected');
+                    }
+                    
+                    visualOptionsDiv.appendChild(optionBtn);
+                });
+                
+                chatbotMessages.appendChild(visualOptionsDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
+            function showPeopleOptions(type, max = 6) {
+                const peopleOptionsDiv = document.createElement('div');
+                peopleOptionsDiv.className = 'people-options';
+                
+                for (let i = (type === 'adults' ? 1 : 0); i <= max; i++) {
+                    const optionBtn = document.createElement('button');
+                    optionBtn.className = 'people-option';
+                    optionBtn.textContent = i;
+                    optionBtn.addEventListener('click', () => {
+                        // Remover selección anterior
+                        peopleOptionsDiv.querySelectorAll('.people-option').forEach(btn => {
+                            btn.classList.remove('selected');
+                        });
+                        
+                        // Seleccionar opción actual
+                        optionBtn.classList.add('selected');
+                        
+                        // Guardar selección
+                        if (type === 'adults') {
+                            chatbotState.selectedOptions.adults = i;
+                            chatbotState.reservationData.adults = i.toString();
+                        } else if (type === 'children') {
+                            chatbotState.selectedOptions.children = i;
+                            chatbotState.reservationData.children = i.toString();
+                        }
+                        
+                        // Enviar mensaje después de breve delay
+                        setTimeout(() => {
+                            addMessageToChatbot(i.toString(), 'user');
+                            processChatbotResponse(i.toString());
+                        }, 300);
+                    });
+                    
+                    // Seleccionar opción si ya estaba seleccionada antes
+                    if (type === 'adults' && chatbotState.selectedOptions.adults === i) {
+                        optionBtn.classList.add('selected');
+                    } else if (type === 'children' && chatbotState.selectedOptions.children === i) {
+                        optionBtn.classList.add('selected');
+                    }
+                    
+                    peopleOptionsDiv.appendChild(optionBtn);
+                }
+                
+                chatbotMessages.appendChild(peopleOptionsDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
             function showTypingIndicator() {
                 const typingDiv = document.createElement('div');
                 typingDiv.className = 'chatbot-typing';
@@ -3155,6 +3466,124 @@
                 }
             }
 
+            // Función para mostrar calendario
+            function showCalendarPopup(isCheckIn = true) {
+                const calendarPopup = document.createElement('div');
+                calendarPopup.className = 'calendar-popup';
+                
+                const today = new Date();
+                const currentMonth = today.getMonth();
+                const currentYear = today.getFullYear();
+                
+                let currentDate = new Date(currentYear, currentMonth, 1);
+                
+                function renderCalendar() {
+                    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                    
+                    calendarPopup.innerHTML = `
+                        <div class="calendar-header">
+                            <button class="calendar-nav" onclick="prevMonth()">&lt;</button>
+                            <h4>${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}</h4>
+                            <button class="calendar-nav" onclick="nextMonth()">&gt;</button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+                        </div>
+                    `;
+                    
+                    const calendarGrid = calendarPopup.querySelector('.calendar-grid');
+                    
+                    // Obtener primer día del mes
+                    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                    const startingDay = firstDay.getDay();
+                    
+                    // Obtener último día del mes
+                    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+                    const daysInMonth = lastDay.getDate();
+                    
+                    // Agregar días vacíos al inicio
+                    for (let i = 0; i < startingDay; i++) {
+                        const emptyDiv = document.createElement('div');
+                        calendarGrid.appendChild(emptyDiv);
+                    }
+                    
+                    // Agregar días del mes
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dayDiv = document.createElement('div');
+                        dayDiv.className = 'calendar-day';
+                        dayDiv.textContent = day;
+                        
+                        const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                        
+                        dayDiv.addEventListener('click', () => {
+                            if (isCheckIn) {
+                                chatbotState.reservationData.checkIn = dateStr;
+                                addMessageToChatbot(dateStr, 'user');
+                                calendarPopup.remove();
+                                chatbotState.step = 6;
+                                setTimeout(() => {
+                                    addMessageToChatbot(`Fecha de entrada: ${formatDateForDisplay(dateStr)}\n\n¿Y la fecha de salida?`, 'bot');
+                                    showCalendarPopup(false);
+                                }, 500);
+                            } else {
+                                chatbotState.reservationData.checkOut = dateStr;
+                                addMessageToChatbot(dateStr, 'user');
+                                calendarPopup.remove();
+                                chatbotState.step = 7;
+                                
+                                // Resumen de la reserva
+                                const summary = `¡Perfecto! Aquí está el resumen de tu solicitud de reserva:\n\n` +
+                                              `👤 *Nombre:* ${chatbotState.reservationData.firstName} ${chatbotState.reservationData.lastName}\n` +
+                                              `📍 *Ubicación:* ${chatbotState.reservationData.location}\n` +
+                                              `👨‍👩‍👧‍👦 *Personas:* ${chatbotState.reservationData.adults} Adultos, ${chatbotState.reservationData.children} Niños\n` +
+                                              `📅 *Entrada:* ${formatDateForDisplay(chatbotState.reservationData.checkIn)}\n` +
+                                              `📅 *Salida:* ${formatDateForDisplay(chatbotState.reservationData.checkOut)}\n\n` +
+                                              `¿Es correcta esta información?`;
+                                
+                                setTimeout(() => {
+                                    addMessageToChatbot(summary, 'bot');
+                                    showQuickOptions(["Sí, es correcta", "No, quiero corregir algo"]);
+                                }, 800);
+                            }
+                        });
+                        
+                        calendarGrid.appendChild(dayDiv);
+                    }
+                }
+                
+                function prevMonth() {
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    renderCalendar();
+                }
+                
+                function nextMonth() {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    renderCalendar();
+                }
+                
+                // Agregar funciones al scope global temporalmente
+                window.prevMonth = prevMonth;
+                window.nextMonth = nextMonth;
+                
+                renderCalendar();
+                
+                // Posicionar y mostrar el calendario
+                calendarPopup.style.bottom = '70px';
+                calendarPopup.style.left = '10px';
+                chatbotMessages.appendChild(calendarPopup);
+            }
+
+            // Función auxiliar para formatear fechas
+            function formatDateForDisplay(dateStr) {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            }
+
             // Procesar respuesta del chatbot
             function processChatbotResponse(userMessage) {
                 const typingDiv = showTypingIndicator();
@@ -3173,68 +3602,84 @@
                             } else if (lowerMessage.includes('propiedad') || lowerMessage.includes('opciones')) {
                                 addMessageToChatbot('Tenemos 4 propiedades disponibles:\n\n1. Morada Luna Condesa\n2. Morada Luna Roma Norte\n3. Morada Luna Polanco\n4. Morada Luna Coyoacán\n\n¿Te gustaría hacer una reserva en alguna de estas propiedades?', 'bot');
                                 chatbotState.step = 0;
-                            } else if (lowerMessage.includes('precio') || lowerMessage.includes('costo')) {
-                                addMessageToChatbot('Los precios varían según la temporada y la propiedad. Para obtener información detallada de precios, necesito saber en qué propiedad y fechas estás interesado. ¿Te gustaría hacer una consulta específica?', 'bot');
+                            } else if (lowerMessage.includes('lugares') || lowerMessage.includes('turísticos') || lowerMessage.includes('cdmx')) {
+                                addMessageToChatbot('¡Excelente! En CDMX tenemos muchos lugares increíbles para visitar:\n\n• Centro Histórico\n• Parque de Chapultepec\n• Museo Frida Kahlo\n• La Roma y La Condesa\n• Teotihuacán\n• Xochimilco\n\n¿Sobre cuál lugar te gustaría más información?', 'bot');
                                 chatbotState.step = 0;
-                            } else if (lowerMessage.includes('pregunta') || lowerMessage.includes('frecuente')) {
-                                addMessageToChatbot('Preguntas frecuentes:\n\n1. ¿Cuál es el horario de check-in/check-out?\n2. ¿Aceptan mascotas?\n3. ¿Hay estacionamiento disponible?\n4. ¿Cómo funciona el WiFi?\n\n¿Te gustaría hacer una reserva o necesitas más información sobre algo específico?', 'bot');
-                                chatbotState.step = 0;
+                            } else if (lowerMessage.includes('fifa') || lowerMessage.includes('mundial')) {
+                                addMessageToChatbot('¡FIFA 2026 en México! 🏆⚽\n\nMorada Luna está preparado para recibir a los aficionados del mundial. Tenemos propiedades cerca del Estadio Azteca con todas las comodidades para disfrutar del torneo.\n\n¿Te gustaría información específica sobre alojamiento para el mundial?', 'bot');
+                                showQuickOptions(["Sí, información FIFA", "Quiero hacer reserva normal"]);
                             } else {
-                                addMessageToChatbot('Para ayudarte mejor, por favor selecciona una de las opciones anteriores o dime qué necesitas específicamente.', 'bot');
-                                showQuickOptions([
-                                    "Quiero hacer una reserva",
-                                    "Ver opciones de propiedades",
-                                    "Consultar precios",
-                                    "Preguntas frecuentes"
-                                ]);
+                                // Buscar si pregunta por algún lugar turístico
+                                let foundAttraction = false;
+                                for (const key in touristAttractions) {
+                                    if (lowerMessage.includes(key)) {
+                                        const attraction = touristAttractions[key];
+                                        addMessageToChatbot(`${attraction.name}:\n${attraction.description}\n\n¿Te gustaría buscar más información en Google?`, 'bot');
+                                        showQuickOptions(["Sí, buscar en Google", "Ver otro lugar"]);
+                                        foundAttraction = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (!foundAttraction) {
+                                    addMessageToChatbot('Para ayudarte mejor, por favor selecciona una de las opciones o dime qué necesitas específicamente.', 'bot');
+                                    showQuickOptions([
+                                        "Quiero hacer una reserva",
+                                        "Ver opciones de propiedades",
+                                        "Lugares turísticos en CDMX",
+                                        "Información sobre FIFA 2026"
+                                    ]);
+                                }
                             }
                             break;
                             
-                        case 1: // Paso 1: Nombre
-                            chatbotState.reservationData.name = userMessage;
+                        case 1: // Paso 1: Nombre (TEXTO)
+                            chatbotState.reservationData.firstName = userMessage;
+                            chatbotState.step = 1.5;
+                            addMessageToChatbot(`Mucho gusto ${userMessage}. ¿Cuál es tu apellido?`, 'bot');
+                            break;
+                            
+                        case 1.5: // Paso 1.5: Apellido (TEXTO)
+                            chatbotState.reservationData.lastName = userMessage;
                             chatbotState.step = 2;
-                            addMessageToChatbot(`Mucho gusto ${userMessage}. ¿En qué ubicación te gustaría realizar tu reserva? Tenemos propiedades en:\n\n• Roma Norte\n• Coyoacán\n• Polanco\n• Condesa`, 'bot');
+                            addMessageToChatbot(`Perfecto, ${chatbotState.reservationData.firstName} ${chatbotState.reservationData.lastName}. ¿En qué ubicación te gustaría realizar tu reserva?`, 'bot');
+                            setTimeout(() => {
+                                showVisualOptions(["Roma Norte", "Coyoacán", "Polanco", "Condesa"], 'location');
+                            }, 500);
                             break;
                             
-                        case 2: // Paso 2: Ubicación
-                            chatbotState.reservationData.location = userMessage;
-                            chatbotState.step = 3;
-                            addMessageToChatbot(`Perfecto, ${chatbotState.reservationData.location}. Ahora necesito saber el número de personas:\n\n¿Cuántos adultos serán?`, 'bot');
+                        case 2: // Paso 2: Ubicación (VISUAL)
+                            if (chatbotState.reservationData.location) {
+                                chatbotState.step = 3;
+                                addMessageToChatbot(`Perfecto, ${chatbotState.reservationData.location}. Ahora necesito saber el número de personas:\n\n¿Cuántos adultos serán?`, 'bot');
+                                setTimeout(() => {
+                                    showPeopleOptions('adults', 6);
+                                }, 500);
+                            } else {
+                                addMessageToChatbot('Por favor, selecciona una ubicación de las opciones visuales.', 'bot');
+                            }
                             break;
                             
-                        case 3: // Paso 3: Adultos
-                            chatbotState.reservationData.adults = userMessage;
-                            chatbotState.step = 4;
-                            addMessageToChatbot(`Gracias. ¿Y cuántos niños (si aplica)? Puedes escribir "0" si no hay niños.`, 'bot');
+                        case 3: // Paso 3: Adultos (VISUAL)
+                            if (chatbotState.reservationData.adults) {
+                                chatbotState.step = 4;
+                                addMessageToChatbot(`Gracias. ¿Y cuántos niños (si aplica)?`, 'bot');
+                                setTimeout(() => {
+                                    showPeopleOptions('children', 3);
+                                }, 500);
+                            } else {
+                                addMessageToChatbot('Por favor, selecciona el número de adultos usando las opciones visuales.', 'bot');
+                            }
                             break;
                             
-                        case 4: // Paso 4: Niños
+                        case 4: // Paso 4: Niños (VISUAL)
                             chatbotState.reservationData.children = userMessage;
                             chatbotState.step = 5;
-                            addMessageToChatbot(`Excelente. Ahora necesito las fechas de tu estadía.\n\n¿Cuál sería tu fecha de entrada? (Por favor, usa formato DD/MM/AAAA, por ejemplo: 13/01/2026)`, 'bot');
-                            break;
-                            
-                        case 5: // Paso 5: Fecha de entrada
-                            chatbotState.reservationData.checkIn = userMessage;
-                            chatbotState.step = 6;
-                            addMessageToChatbot(`Fecha de entrada: ${userMessage}\n\n¿Y la fecha de salida? (Formato DD/MM/AAAA)`, 'bot');
-                            break;
-                            
-                        case 6: // Paso 6: Fecha de salida
-                            chatbotState.reservationData.checkOut = userMessage;
-                            chatbotState.step = 7;
-                            
-                            // Resumen de la reserva
-                            const summary = `¡Perfecto! Aquí está el resumen de tu solicitud de reserva:\n\n` +
-                                          `👤 *Nombre:* ${chatbotState.reservationData.name}\n` +
-                                          `📍 *Ubicación:* ${chatbotState.reservationData.location}\n` +
-                                          `👨‍👩‍👧‍👦 *Personas:* ${chatbotState.reservationData.adults} Adultos, ${chatbotState.reservationData.children} Niños\n` +
-                                          `📅 *Entrada:* ${chatbotState.reservationData.checkIn}\n` +
-                                          `📅 *Salida:* ${chatbotState.reservationData.checkOut}\n\n` +
-                                          `¿Es correcta esta información?`;
-                            
-                            addMessageToChatbot(summary, 'bot');
-                            showQuickOptions(["Sí, es correcta", "No, quiero corregir algo"]);
+                            addMessageToChatbot(`Excelente. Ahora necesito las fechas de tu estadía.\n\n¿Cuál sería tu fecha de entrada? Haz clic en el calendario que aparecerá a continuación:`, 'bot');
+                            // Mostrar calendario para fecha de entrada
+                            setTimeout(() => {
+                                showCalendarPopup(true);
+                            }, 800);
                             break;
                             
                         case 7: // Paso 7: Confirmación
@@ -3244,15 +3689,15 @@
                                 // Crear mensaje para WhatsApp con el formato solicitado
                                 let whatsappMessage = `¡Hola! Me gustaría consultar la disponibilidad:\n\n`;
                                 whatsappMessage += `📍 *Ubicación:* ${chatbotState.reservationData.location}\n`;
-                                whatsappMessage += `📅 *Ingreso:* ${chatbotState.reservationData.checkIn}\n`;
-                                whatsappMessage += `📅 *Salida:* ${chatbotState.reservationData.checkOut}\n`;
+                                whatsappMessage += `📅 *Ingreso:* ${formatDateForDisplay(chatbotState.reservationData.checkIn)}\n`;
+                                whatsappMessage += `📅 *Salida:* ${formatDateForDisplay(chatbotState.reservationData.checkOut)}\n`;
                                 whatsappMessage += `👨‍👩‍👧‍👦 *Personas:* ${chatbotState.reservationData.adults} Adultos`;
                                 
                                 if (parseInt(chatbotState.reservationData.children) > 0) {
                                     whatsappMessage += `, ${chatbotState.reservationData.children} Niños`;
                                 }
                                 
-                                whatsappMessage += `\n\n¿Podrían decirme si está disponible, y que costo tendría?\n\n*Solicitado por:* ${chatbotState.reservationData.name}`;
+                                whatsappMessage += `\n\n¿Podrían decirme si está disponible, y que costo tendría?\n\n*Solicitado por:* ${chatbotState.reservationData.firstName} ${chatbotState.reservationData.lastName}`;
                                 
                                 // Esperar 2 segundos antes de redirigir
                                 setTimeout(() => {
@@ -3263,12 +3708,18 @@
                                     chatbotState = {
                                         step: 0,
                                         reservationData: {
-                                            name: '',
+                                            firstName: '',
+                                            lastName: '',
                                             location: '',
                                             adults: '',
                                             children: '',
                                             checkIn: '',
                                             checkOut: ''
+                                        },
+                                        selectedOptions: {
+                                            location: null,
+                                            adults: null,
+                                            children: null
                                         }
                                     };
                                 }, 2000);
@@ -3276,6 +3727,7 @@
                                 addMessageToChatbot('¿Qué dato te gustaría corregir?', 'bot');
                                 showQuickOptions([
                                     "Nombre",
+                                    "Apellido",
                                     "Ubicación",
                                     "Número de personas",
                                     "Fechas"
@@ -3288,20 +3740,59 @@
                             if (lowerMessage.includes('nombre')) {
                                 chatbotState.step = 1;
                                 addMessageToChatbot('Por favor, dime tu nombre nuevamente:', 'bot');
+                            } else if (lowerMessage.includes('apellido')) {
+                                chatbotState.step = 1.5;
+                                addMessageToChatbot('Por favor, dime tu apellido nuevamente:', 'bot');
                             } else if (lowerMessage.includes('ubicación')) {
                                 chatbotState.step = 2;
+                                chatbotState.reservationData.location = '';
+                                chatbotState.selectedOptions.location = null;
                                 addMessageToChatbot('¿En qué ubicación te gustaría realizar tu reserva?', 'bot');
-                            } else if (lowerMessage.includes('personas')) {
+                                setTimeout(() => {
+                                    showVisualOptions(["Roma Norte", "Coyoacán", "Polanco", "Condesa"], 'location');
+                                }, 500);
+                            } else if (lowerMessage.includes('personas') || lowerMessage.includes('adultos') || lowerMessage.includes('niños')) {
                                 chatbotState.step = 3;
-                                addMessageToChatbot('¿Cuántos adultos serán?', 'bot');
+                                chatbotState.reservationData.adults = '';
+                                chatbotState.reservationData.children = '';
+                                chatbotState.selectedOptions.adults = null;
+                                chatbotState.selectedOptions.children = null;
+                                addMessageToChatbot('Vamos a seleccionar el número de personas nuevamente. ¿Cuántos adultos serán?', 'bot');
+                                setTimeout(() => {
+                                    showPeopleOptions('adults', 6);
+                                }, 500);
                             } else if (lowerMessage.includes('fecha')) {
                                 chatbotState.step = 5;
-                                addMessageToChatbot('¿Cuál sería tu fecha de entrada? (Formato DD/MM/AAAA)', 'bot');
+                                chatbotState.reservationData.checkIn = '';
+                                chatbotState.reservationData.checkOut = '';
+                                addMessageToChatbot('Vamos a seleccionar las fechas nuevamente. ¿Cuál sería tu fecha de entrada?', 'bot');
+                                setTimeout(() => {
+                                    showCalendarPopup(true);
+                                }, 800);
+                            } else if (lowerMessage.includes('google')) {
+                                // Buscar en Google
+                                for (const key in touristAttractions) {
+                                    if (lowerMessage.includes(key) || chatbotMessages.lastUserMessage?.includes(key)) {
+                                        const attraction = touristAttractions[key];
+                                        searchGoogle(attraction.googleSearch);
+                                        break;
+                                    }
+                                }
+                                addMessageToChatbot('¡Perfecto! He abierto Google con la búsqueda del lugar turístico. ¿Necesitas algo más?', 'bot');
+                                chatbotState.step = 0;
+                                showQuickOptions([
+                                    "Quiero hacer una reserva",
+                                    "Ver otro lugar turístico",
+                                    "Información sobre FIFA 2026"
+                                ]);
                             } else {
                                 addMessageToChatbot('No entiendo. Por favor, selecciona una de las opciones o dime específicamente qué quieres corregir.', 'bot');
                             }
                             break;
                     }
+                    
+                    // Guardar el último mensaje del usuario para referencia
+                    chatbotMessages.lastUserMessage = lowerMessage;
                 }, 1000);
             }
         }
