@@ -59,6 +59,8 @@
             font-weight: 800;
             color: #4a6fa5;
             font-family: 'Poppins', sans-serif;
+            /* Texto movido más a la derecha */
+            margin-left: 1.5rem;
         }
 
         .nav-links {
@@ -380,23 +382,23 @@
             }
         }
 
-        /* Search section */
+        /* Search section - Más pequeño */
         .search-section {
-            max-width: 1200px;
-            margin: -50px auto 2rem;
-            padding: 0 2rem;
+            max-width: 1000px; /* Reducido de 1200px */
+            margin: -30px auto 2rem; /* Reducido de -50px */
+            padding: 0 1.5rem; /* Reducido de 2rem */
             position: relative;
             z-index: 10;
         }
 
         .search-box {
             background: white;
-            border-radius: 15px;
-            padding: 2rem;
+            border-radius: 12px; /* Reducido de 15px */
+            padding: 1.5rem; /* Reducido de 2rem */
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reducido de 200px */
+            gap: 1rem; /* Reducido de 1.5rem */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12); /* Reducido de 30px */
         }
 
         .search-input {
@@ -406,17 +408,17 @@
 
         .search-input label {
             color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.85rem; /* Reducido de 0.9rem */
+            margin-bottom: 0.4rem; /* Reducido de 0.5rem */
             font-weight: 600;
         }
 
         .search-input input,
         .search-input select {
-            padding: 0.9rem;
+            padding: 0.7rem; /* Reducido de 0.9rem */
             border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 6px; /* Reducido de 8px */
+            font-size: 0.9rem; /* Reducido de 1rem */
             transition: border-color 0.3s;
             font-family: 'Inter', sans-serif;
         }
@@ -431,9 +433,9 @@
             background-color: #ff5a5f;
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 0.8rem 1.5rem; /* Reducido de 1rem 2rem */
+            border-radius: 6px; /* Reducido de 8px */
+            font-size: 0.9rem; /* Reducido de 1rem */
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -445,30 +447,6 @@
 
         .btn-primary:hover {
             background-color: #e04a50;
-        }
-
-        /* Animación de búsqueda */
-        @keyframes searchAnimation {
-            0% {
-                transform: scale(1);
-            }
-            25% {
-                transform: scale(1.05);
-            }
-            50% {
-                transform: scale(1);
-            }
-            75% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .searching {
-            animation: searchAnimation 4s ease-in-out;
-            background-color: #4a6fa5 !important;
         }
 
         /* Sección Quiénes Somos */
@@ -1412,6 +1390,270 @@
             font-weight: 400;
         }
 
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chatbot-toggle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #4a6fa5, #6d9dc5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(74, 111, 165, 0.4);
+            transition: all 0.3s ease;
+            animation: chatbotPulse 3s infinite;
+        }
+
+        @keyframes chatbotPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(74, 111, 165, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(74, 111, 165, 0);
+            }
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(74, 111, 165, 0.6);
+            animation: none;
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 90px;
+            left: 0;
+            width: 380px;
+            height: 550px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(45deg, #4a6fa5, #6d9dc5);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .close-chatbot {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #f8f9fa;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .bot-message {
+            background: white;
+            border: 1px solid #e0e0e0;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: #4a6fa5;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input-container {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chatbot-input:focus {
+            border-color: #4a6fa5;
+        }
+
+        .chatbot-send-btn {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(45deg, #4a6fa5, #6d9dc5);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .chatbot-send-btn:hover {
+            background: linear-gradient(45deg, #3a5a8a, #5d8db5);
+        }
+
+        .quick-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quick-option {
+            background: #f0f7ff;
+            border: 1px solid #4a6fa5;
+            color: #4a6fa5;
+            padding: 0.5rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-option:hover {
+            background: #4a6fa5;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #4a6fa5;
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .chatbot-typing {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Estilo para el spinner de FIFA centrado */
+        .fifa-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border: 5px solid white;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 992px) {
             .hero-banner {
@@ -1521,6 +1763,18 @@
             .schedule-grid {
                 grid-template-columns: 1fr;
             }
+
+            .chatbot-window {
+                width: 320px;
+                height: 500px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .chatbot-container {
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
 
         @media (max-width: 480px) {
@@ -1568,6 +1822,11 @@
             
             .fifa-cta {
                 padding: 2rem 1rem;
+            }
+
+            .chatbot-window {
+                width: 280px;
+                height: 450px;
             }
         }
     </style>
@@ -1791,6 +2050,28 @@
         <span class="whatsapp-text">¿Necesitas Ayuda?<br>Chatea con nosotros</span>
     </div>
 
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3>¡NovaAgent! - Especialista en Reservas</h3>
+                <button class="close-chatbot" id="closeChatbot">&times;</button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <!-- Los mensajes se agregarán aquí -->
+            </div>
+            <div class="chatbot-input-container">
+                <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Escribe tu mensaje aquí...">
+                <button class="chatbot-send-btn" id="chatbotSendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <header>
         <nav>
             <div class="logo-container">
@@ -1874,7 +2155,7 @@
                         <option value="3">3 niños</option>
                     </select>
                 </div>
-                <button id="search-btn" class="btn-primary" onclick="performSearch()">Buscar Disponibilidad</button>
+                <button id="search-btn" class="btn-primary" onclick="performReservation()">Reservar</button>
             </div>
         </section>
 
@@ -2294,6 +2575,34 @@
     </footer>
 
     <script>
+        // Variables globales
+        let currentSearch = {
+            location: '',
+            checkIn: '2026-02-05',
+            checkOut: '2026-02-09',
+            adults: 2,
+            children: 0
+        };
+
+        // Variables para slideshow
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        let slideInterval;
+
+        // Chatbot Variables
+        let chatbotState = {
+            step: 0,
+            reservationData: {
+                name: '',
+                location: '',
+                adults: '',
+                children: '',
+                checkIn: '',
+                checkOut: ''
+            }
+        };
+
         // Datos de las reseñas con URLs de avatares de IA
         const reviews = [
             {
@@ -2346,21 +2655,6 @@
             }
         ];
 
-        // Variables globales
-        let currentSearch = {
-            location: '',
-            checkIn: '2026-02-05',
-            checkOut: '2026-02-09',
-            adults: 2,
-            children: 0
-        };
-
-        // Variables para slideshow
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const indicators = document.querySelectorAll('.indicator');
-        let slideInterval;
-
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             setDefaultDates();
@@ -2370,6 +2664,7 @@
             setupFIFAModal();
             initReviewsGrid();
             initAttractionCards();
+            initChatbot();
             
             // Suavizar scroll a las secciones
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -2530,7 +2825,7 @@
             }
         }
 
-        // Función para reservar con animación de fútbol
+        // Función para reservar con animación de fútbol (CIRCULO CENTRADO)
         function reserveWithFIFAAnimation() {
             const fifaModal = document.getElementById('fifaModal');
             const fifaBody = document.querySelector('.fifa-body');
@@ -2553,36 +2848,26 @@
                 font-family: 'Inter', sans-serif;
             `;
             
-            // Agregar contenido de animación
+            // Agregar contenido de animación CON SPINNER CENTRADO
             animationOverlay.innerHTML = `
-                <div style="text-align: center; padding: 2rem;">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">
-                        ⚽ 🏆 🌎
+                <div style="text-align: center; padding: 2rem; position: relative; height: 100%; width: 100%;">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">
+                            ⚽ 🏆 🌎
+                        </div>
+                        <h2 style="font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                            FIFA 2026™
+                        </h2>
+                        <p style="font-size: 1.5rem; margin-bottom: 2rem; max-width: 600px;">
+                            ¡Preparando tu experiencia para el Mundial en México!
+                        </p>
+                        <div class="fifa-spinner"></div>
+                        <p style="margin-top: 5rem; font-size: 1.2rem;">
+                            Redirigiendo a WhatsApp en 3 segundos...
+                        </p>
                     </div>
-                    <h2 style="font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
-                        FIFA 2026™
-                    </h2>
-                    <p style="font-size: 1.5rem; margin-bottom: 2rem; max-width: 600px;">
-                        ¡Preparando tu experiencia para el Mundial en México!
-                    </p>
-                    <div style="width: 80px; height: 80px; border: 5px solid white; 
-                                border-radius: 50%; border-top-color: transparent;
-                                animation: spin 1s linear infinite;"></div>
-                    <p style="margin-top: 2rem; font-size: 1.2rem;">
-                        Redirigiendo a WhatsApp en 3 segundos...
-                    </p>
                 </div>
             `;
-            
-            // Agregar estilos para la animación
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
-            `;
-            document.head.appendChild(style);
             
             // Insertar la animación
             document.body.appendChild(animationOverlay);
@@ -2594,7 +2879,6 @@
             setTimeout(() => {
                 // Remover animación
                 document.body.removeChild(animationOverlay);
-                document.head.removeChild(style);
                 
                 // Restaurar scroll
                 document.body.style.overflow = 'auto';
@@ -2602,7 +2886,7 @@
                 // Cerrar modal FIFA
                 fifaModal.style.display = 'none';
                 
-                // Abrir WhatsApp
+                // Abrir WhatsApp con mensaje predefinido para FIFA
                 const message = encodeURIComponent('¡Hola! Me interesa reservar mi estancia para el Mundial FIFA 2026 en Morada Luna. ¿Podrían ayudarme con más información?');
                 window.open(`https://wa.me/5215511406820?text=${message}`, '_blank');
             }, 3000);
@@ -2702,7 +2986,8 @@
             });
         }
 
-        function performSearch() {
+        // NUEVA FUNCIÓN DE RESERVA (reemplaza performSearch)
+        function performReservation() {
             const location = document.getElementById('location').value;
             const checkIn = document.getElementById('checkin-date').value;
             const checkOut = document.getElementById('checkout-date').value;
@@ -2726,8 +3011,6 @@
                 return;
             }
             
-            currentSearch = { location, checkIn, checkOut, adults, children };
-            
             // Formatear fecha para mostrar
             function formatDateForDisplay(dateStr) {
                 const date = new Date(dateStr);
@@ -2738,8 +3021,8 @@
                 });
             }
             
-            // Crear mensaje para WhatsApp
-            let message = `¡Hola! Me gustaría consultar disponibilidad:\n\n`;
+            // Crear mensaje para WhatsApp (sin animación de búsqueda)
+            let message = `¡Hola! Me gustaría consultar la disponibilidad:\n\n`;
             message += `📍 *Ubicación:* ${location}\n`;
             message += `📅 *Ingreso:* ${formatDateForDisplay(checkIn)}\n`;
             message += `📅 *Salida:* ${formatDateForDisplay(checkOut)}\n`;
@@ -2749,23 +3032,278 @@
                 message += `\n👶 *Niños:* ${children} ${children === 1 ? 'Niño' : 'Niños'}`;
             }
             
-            message += `\n\n¿Podrían ayudarme con la disponibilidad?`;
+            message += `\n\n¿Podrían decirme si está disponible, y que costo tendría?`;
             
-            // Agregar animación de búsqueda
-            searchBtn.classList.add('searching');
-            searchBtn.disabled = true;
-            searchBtn.innerHTML = 'Buscando...';
-            
-            // Simular búsqueda con animación
-            setTimeout(() => {
-                // Restaurar botón
-                searchBtn.classList.remove('searching');
-                searchBtn.disabled = false;
-                searchBtn.innerHTML = 'Buscar Disponibilidad';
+            // Redirigir directamente a WhatsApp
+            window.open(`https://wa.me/5215511406820?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // CHATBOT FUNCTIONS
+        function initChatbot() {
+            const chatbotToggle = document.getElementById('chatbotToggle');
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            const closeChatbot = document.getElementById('closeChatbot');
+            const chatbotSendBtn = document.getElementById('chatbotSendBtn');
+            const chatbotInput = document.getElementById('chatbotInput');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+
+            // Abrir/cerrar chatbot
+            chatbotToggle.addEventListener('click', () => {
+                chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+                if (chatbotWindow.style.display === 'flex') {
+                    chatbotInput.focus();
+                    // Mostrar mensaje de bienvenida si es la primera vez
+                    if (chatbotState.step === 0) {
+                        showWelcomeMessage();
+                    }
+                }
+            });
+
+            closeChatbot.addEventListener('click', () => {
+                chatbotWindow.style.display = 'none';
+            });
+
+            // Enviar mensaje al presionar Enter
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendChatbotMessage();
+                }
+            });
+
+            // Enviar mensaje al hacer clic en el botón
+            chatbotSendBtn.addEventListener('click', sendChatbotMessage);
+
+            function sendChatbotMessage() {
+                const message = chatbotInput.value.trim();
+                if (!message) return;
+
+                // Agregar mensaje del usuario
+                addMessageToChatbot(message, 'user');
+                chatbotInput.value = '';
+
+                // Procesar respuesta del bot
+                setTimeout(() => {
+                    processChatbotResponse(message);
+                }, 500);
+            }
+
+            // Mostrar mensaje de bienvenida
+            function showWelcomeMessage() {
+                const welcomeMessage = `¡Hola! Soy NovaAgent, tu asistente especializado en reservas de Morada Luna. Estoy aquí para ayudarte a realizar tu reserva. ¿En qué puedo asistirte hoy?`;
                 
-                // Abrir WhatsApp con el mensaje formateado
-                window.open(`https://wa.me/5215511406820?text=${encodeURIComponent(message)}`, '_blank');
-            }, 4000); // 4 segundos de animación
+                const quickOptions = [
+                    "Quiero hacer una reserva",
+                    "Ver opciones de propiedades",
+                    "Consultar precios",
+                    "Preguntas frecuentes"
+                ];
+
+                addMessageToChatbot(welcomeMessage, 'bot');
+                
+                // Agregar opciones rápidas después de un breve delay
+                setTimeout(() => {
+                    showQuickOptions(quickOptions);
+                }, 800);
+            }
+
+            function addMessageToChatbot(message, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                messageDiv.textContent = message;
+                chatbotMessages.appendChild(messageDiv);
+                
+                // Scroll al final
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
+            function showQuickOptions(options) {
+                const quickOptionsDiv = document.createElement('div');
+                quickOptionsDiv.className = 'quick-options';
+                
+                options.forEach(option => {
+                    const optionBtn = document.createElement('button');
+                    optionBtn.className = 'quick-option';
+                    optionBtn.textContent = option;
+                    optionBtn.addEventListener('click', () => {
+                        addMessageToChatbot(option, 'user');
+                        processChatbotResponse(option);
+                    });
+                    quickOptionsDiv.appendChild(optionBtn);
+                });
+                
+                chatbotMessages.appendChild(quickOptionsDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'chatbot-typing';
+                typingDiv.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                chatbotMessages.appendChild(typingDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                
+                return typingDiv;
+            }
+
+            function removeTypingIndicator(typingDiv) {
+                if (typingDiv && typingDiv.parentNode) {
+                    typingDiv.parentNode.removeChild(typingDiv);
+                }
+            }
+
+            // Procesar respuesta del chatbot
+            function processChatbotResponse(userMessage) {
+                const typingDiv = showTypingIndicator();
+                
+                setTimeout(() => {
+                    removeTypingIndicator(typingDiv);
+                    
+                    const lowerMessage = userMessage.toLowerCase();
+                    
+                    // Proceso de reserva paso a paso
+                    switch (chatbotState.step) {
+                        case 0: // Paso 0: Bienvenida
+                            if (lowerMessage.includes('reserva') || lowerMessage.includes('quiero hacer')) {
+                                chatbotState.step = 1;
+                                addMessageToChatbot('¡Excelente! Para comenzar con tu reserva, necesito algunos datos. ¿Cuál es tu nombre?', 'bot');
+                            } else if (lowerMessage.includes('propiedad') || lowerMessage.includes('opciones')) {
+                                addMessageToChatbot('Tenemos 4 propiedades disponibles:\n\n1. Morada Luna Condesa\n2. Morada Luna Roma Norte\n3. Morada Luna Polanco\n4. Morada Luna Coyoacán\n\n¿Te gustaría hacer una reserva en alguna de estas propiedades?', 'bot');
+                                chatbotState.step = 0;
+                            } else if (lowerMessage.includes('precio') || lowerMessage.includes('costo')) {
+                                addMessageToChatbot('Los precios varían según la temporada y la propiedad. Para obtener información detallada de precios, necesito saber en qué propiedad y fechas estás interesado. ¿Te gustaría hacer una consulta específica?', 'bot');
+                                chatbotState.step = 0;
+                            } else if (lowerMessage.includes('pregunta') || lowerMessage.includes('frecuente')) {
+                                addMessageToChatbot('Preguntas frecuentes:\n\n1. ¿Cuál es el horario de check-in/check-out?\n2. ¿Aceptan mascotas?\n3. ¿Hay estacionamiento disponible?\n4. ¿Cómo funciona el WiFi?\n\n¿Te gustaría hacer una reserva o necesitas más información sobre algo específico?', 'bot');
+                                chatbotState.step = 0;
+                            } else {
+                                addMessageToChatbot('Para ayudarte mejor, por favor selecciona una de las opciones anteriores o dime qué necesitas específicamente.', 'bot');
+                                showQuickOptions([
+                                    "Quiero hacer una reserva",
+                                    "Ver opciones de propiedades",
+                                    "Consultar precios",
+                                    "Preguntas frecuentes"
+                                ]);
+                            }
+                            break;
+                            
+                        case 1: // Paso 1: Nombre
+                            chatbotState.reservationData.name = userMessage;
+                            chatbotState.step = 2;
+                            addMessageToChatbot(`Mucho gusto ${userMessage}. ¿En qué ubicación te gustaría realizar tu reserva? Tenemos propiedades en:\n\n• Roma Norte\n• Coyoacán\n• Polanco\n• Condesa`, 'bot');
+                            break;
+                            
+                        case 2: // Paso 2: Ubicación
+                            chatbotState.reservationData.location = userMessage;
+                            chatbotState.step = 3;
+                            addMessageToChatbot(`Perfecto, ${chatbotState.reservationData.location}. Ahora necesito saber el número de personas:\n\n¿Cuántos adultos serán?`, 'bot');
+                            break;
+                            
+                        case 3: // Paso 3: Adultos
+                            chatbotState.reservationData.adults = userMessage;
+                            chatbotState.step = 4;
+                            addMessageToChatbot(`Gracias. ¿Y cuántos niños (si aplica)? Puedes escribir "0" si no hay niños.`, 'bot');
+                            break;
+                            
+                        case 4: // Paso 4: Niños
+                            chatbotState.reservationData.children = userMessage;
+                            chatbotState.step = 5;
+                            addMessageToChatbot(`Excelente. Ahora necesito las fechas de tu estadía.\n\n¿Cuál sería tu fecha de entrada? (Por favor, usa formato DD/MM/AAAA, por ejemplo: 13/01/2026)`, 'bot');
+                            break;
+                            
+                        case 5: // Paso 5: Fecha de entrada
+                            chatbotState.reservationData.checkIn = userMessage;
+                            chatbotState.step = 6;
+                            addMessageToChatbot(`Fecha de entrada: ${userMessage}\n\n¿Y la fecha de salida? (Formato DD/MM/AAAA)`, 'bot');
+                            break;
+                            
+                        case 6: // Paso 6: Fecha de salida
+                            chatbotState.reservationData.checkOut = userMessage;
+                            chatbotState.step = 7;
+                            
+                            // Resumen de la reserva
+                            const summary = `¡Perfecto! Aquí está el resumen de tu solicitud de reserva:\n\n` +
+                                          `👤 *Nombre:* ${chatbotState.reservationData.name}\n` +
+                                          `📍 *Ubicación:* ${chatbotState.reservationData.location}\n` +
+                                          `👨‍👩‍👧‍👦 *Personas:* ${chatbotState.reservationData.adults} Adultos, ${chatbotState.reservationData.children} Niños\n` +
+                                          `📅 *Entrada:* ${chatbotState.reservationData.checkIn}\n` +
+                                          `📅 *Salida:* ${chatbotState.reservationData.checkOut}\n\n` +
+                                          `¿Es correcta esta información?`;
+                            
+                            addMessageToChatbot(summary, 'bot');
+                            showQuickOptions(["Sí, es correcta", "No, quiero corregir algo"]);
+                            break;
+                            
+                        case 7: // Paso 7: Confirmación
+                            if (lowerMessage.includes('sí') || lowerMessage.includes('correcta')) {
+                                addMessageToChatbot('¡Excelente! Ahora te redirigiré a WhatsApp para que completes tu reserva con nuestro equipo. Ellos te confirmarán la disponibilidad y el costo exacto.', 'bot');
+                                
+                                // Crear mensaje para WhatsApp con el formato solicitado
+                                let whatsappMessage = `¡Hola! Me gustaría consultar la disponibilidad:\n\n`;
+                                whatsappMessage += `📍 *Ubicación:* ${chatbotState.reservationData.location}\n`;
+                                whatsappMessage += `📅 *Ingreso:* ${chatbotState.reservationData.checkIn}\n`;
+                                whatsappMessage += `📅 *Salida:* ${chatbotState.reservationData.checkOut}\n`;
+                                whatsappMessage += `👨‍👩‍👧‍👦 *Personas:* ${chatbotState.reservationData.adults} Adultos`;
+                                
+                                if (parseInt(chatbotState.reservationData.children) > 0) {
+                                    whatsappMessage += `, ${chatbotState.reservationData.children} Niños`;
+                                }
+                                
+                                whatsappMessage += `\n\n¿Podrían decirme si está disponible, y que costo tendría?\n\n*Solicitado por:* ${chatbotState.reservationData.name}`;
+                                
+                                // Esperar 2 segundos antes de redirigir
+                                setTimeout(() => {
+                                    window.open(`https://wa.me/5215511406820?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
+                                    chatbotWindow.style.display = 'none';
+                                    
+                                    // Resetear el estado del chatbot
+                                    chatbotState = {
+                                        step: 0,
+                                        reservationData: {
+                                            name: '',
+                                            location: '',
+                                            adults: '',
+                                            children: '',
+                                            checkIn: '',
+                                            checkOut: ''
+                                        }
+                                    };
+                                }, 2000);
+                            } else {
+                                addMessageToChatbot('¿Qué dato te gustaría corregir?', 'bot');
+                                showQuickOptions([
+                                    "Nombre",
+                                    "Ubicación",
+                                    "Número de personas",
+                                    "Fechas"
+                                ]);
+                            }
+                            break;
+                            
+                        default:
+                            // Si el usuario quiere corregir algo
+                            if (lowerMessage.includes('nombre')) {
+                                chatbotState.step = 1;
+                                addMessageToChatbot('Por favor, dime tu nombre nuevamente:', 'bot');
+                            } else if (lowerMessage.includes('ubicación')) {
+                                chatbotState.step = 2;
+                                addMessageToChatbot('¿En qué ubicación te gustaría realizar tu reserva?', 'bot');
+                            } else if (lowerMessage.includes('personas')) {
+                                chatbotState.step = 3;
+                                addMessageToChatbot('¿Cuántos adultos serán?', 'bot');
+                            } else if (lowerMessage.includes('fecha')) {
+                                chatbotState.step = 5;
+                                addMessageToChatbot('¿Cuál sería tu fecha de entrada? (Formato DD/MM/AAAA)', 'bot');
+                            } else {
+                                addMessageToChatbot('No entiendo. Por favor, selecciona una de las opciones o dime específicamente qué quieres corregir.', 'bot');
+                            }
+                            break;
+                    }
+                }, 1000);
+            }
         }
     </script>
 </body>
