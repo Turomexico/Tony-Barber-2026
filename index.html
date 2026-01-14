@@ -1874,6 +1874,165 @@
             transform: translateY(-2px);
         }
 
+        /* Botón Empezar de Nuevo */
+        .reset-chatbot-btn {
+            background: linear-gradient(45deg, #ff5a5f, #e04a50);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .reset-chatbot-btn:hover {
+            background: linear-gradient(45deg, #e04a50, #c03a40);
+            transform: translateY(-2px);
+        }
+
+        /* Opciones de Lugares Turísticos Visuales */
+        .tourist-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tourist-option {
+            background: #f0f7ff;
+            border: 2px solid #4a6fa5;
+            color: #4a6fa5;
+            padding: 0.8rem 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.9rem;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .tourist-option i {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .tourist-option:hover {
+            background: #4a6fa5;
+            color: white;
+        }
+
+        .tourist-option.selected {
+            background: #4a6fa5;
+            color: white;
+            border-color: #3a5a8a;
+        }
+
+        /* Recomendaciones de Google Places */
+        .google-places-recommendations {
+            margin-top: 0.5rem;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .place-recommendation {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .place-info {
+            flex: 1;
+        }
+
+        .place-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .place-type {
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .place-actions {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .place-action-btn {
+            background: #4a6fa5;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .place-action-btn:hover {
+            background: #3a5a8a;
+        }
+
+        /* Botón de filtrar */
+        .filter-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            color: #666;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #4a6fa5;
+            color: white;
+            border-color: #4a6fa5;
+        }
+
+        .filter-btn:hover {
+            background: #4a6fa5;
+            color: white;
+            border-color: #4a6fa5;
+        }
+
         /* Responsive */
         @media (max-width: 992px) {
             .hero-banner {
@@ -2018,6 +2177,10 @@
             .visual-option {
                 min-height: 45px;
                 font-size: 0.85rem;
+            }
+            
+            .tourist-options {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -2869,7 +3032,8 @@
                 adults: null,
                 children: null
             },
-            aiMode: false // Nuevo: modo Agente IA
+            aiMode: false,
+            currentPlaceType: 'all' // Para filtrar recomendaciones
         };
 
         // Datos de las reseñas con URLs de avatares de IA
@@ -2930,112 +3094,196 @@
                 name: 'Centro Histórico',
                 description: 'El corazón de la ciudad con el Zócalo, la Catedral Metropolitana y el Palacio de Bellas Artes.',
                 googleSearch: 'Centro Histórico Ciudad de México atracciones turísticas',
-                mapsUrl: 'https://maps.app.goo.gl/xT7tjaAPmsKpJy3e8'
+                mapsUrl: 'https://maps.app.goo.gl/xT7tjaAPmsKpJy3e8',
+                icon: '🏛️'
             },
             'chapultepec': {
                 name: 'Parque de Chapultepec',
                 description: 'El parque urbano más grande de Latinoamérica con el Castillo de Chapultepec y varios museos.',
                 googleSearch: 'Parque Chapultepec Ciudad de México Castillo museos',
-                mapsUrl: 'https://maps.app.goo.gl/s7ttcFSyAYLmK6bv7'
+                mapsUrl: 'https://maps.app.goo.gl/s7ttcFSyAYLmK6bv7',
+                icon: '🌳'
             },
             'frida kahlo': {
                 name: 'Museo Frida Kahlo',
                 description: 'La Casa Azul en Coyoacán, hogar de la famosa artista mexicana Frida Kahlo.',
                 googleSearch: 'Museo Frida Kahlo Casa Azul Coyoacán tickets horarios',
-                mapsUrl: 'https://maps.app.goo.gl/igHdQ6AxfUv8ojDF7'
+                mapsUrl: 'https://maps.app.goo.gl/igHdQ6AxfUv8ojDF7',
+                icon: '🎨'
             },
             'roma': {
                 name: 'La Roma y La Condesa',
                 description: 'Barrios de moda con excelente gastronomía, bares y vida nocturna.',
                 googleSearch: 'La Roma Condesa Ciudad de México restaurantes bares',
-                mapsUrl: 'https://maps.app.goo.gl/6hstf2p6Py15g5S89'
+                mapsUrl: 'https://maps.app.goo.gl/6hstf2p6Py15g5S89',
+                icon: '🍽️'
             },
             'condesa': {
                 name: 'La Roma y La Condesa',
                 description: 'Barrios de moda con excelente gastronomía, bares y vida nocturna.',
                 googleSearch: 'La Roma Condesa Ciudad de México restaurantes bares',
-                mapsUrl: 'https://maps.app.goo.gl/6hstf2p6Py15g5S89'
+                mapsUrl: 'https://maps.app.goo.gl/6hstf2p6Py15g5S89',
+                icon: '🍽️'
             },
             'teotihuacán': {
                 name: 'Teotihuacán',
                 description: 'Zona arqueológica con las imponentes Pirámides del Sol y la Luna.',
                 googleSearch: 'Teotihuacán pirámides tours desde Ciudad de México',
-                mapsUrl: 'https://maps.app.goo.gl/WiYUyy5C1ptvEo8j6'
+                mapsUrl: 'https://maps.app.goo.gl/WiYUyy5C1ptvEo8j6',
+                icon: '🏺'
             },
             'xochimilco': {
                 name: 'Xochimilco',
                 description: 'Patrimonio de la Humanidad con paseos en trajinera por los canales.',
                 googleSearch: 'Xochimilco trajineras canales Ciudad de México tours',
-                mapsUrl: 'https://maps.app.goo.gl/daXkDNPgQz6UB5Rq7'
+                mapsUrl: 'https://maps.app.goo.gl/daXkDNPgQz6UB5Rq7',
+                icon: '🚤'
             }
         };
 
-        // Función para obtener recomendaciones de Google Places (simulada)
-        function getGooglePlacesRecommendations(location, type) {
-            // En un entorno real, aquí se haría una llamada a la API de Google Places
-            // Por ahora, simulamos respuestas basadas en la ubicación
-            
-            const recommendations = {
-                'Roma Norte': {
-                    'restaurantes': [
-                        'Contramar - Mariscos de alta calidad',
-                        'Rosetta - Cocina italiana gourmet',
-                        'Máximo Bistrot - Cocina de mercado',
-                        'El Parnita - Tacos y antojitos'
-                    ],
-                    'turísticos': [
-                        'Museo Tamayo - Arte contemporáneo',
-                        'Parque México - Área verde emblemática',
-                        'Mercado Roma - Gastronomía diversa',
-                        'Casa Lamm - Centro cultural'
-                    ]
-                },
-                'Coyoacán': {
-                    'restaurantes': [
-                        'Los Danzantes - Cocina mexicana moderna',
-                        'Corazón de Maguey - Mezcal y comida tradicional',
-                        'El Morral - Cocina mexicana contemporánea',
-                        'Café El Jarocho - Café tradicional'
-                    ],
-                    'turísticos': [
-                        'Museo Frida Kahlo - Casa Azul',
-                        'Museo Diego Rivera-Anahuacalli',
-                        'Jardín Centenario - Plaza principal',
-                        'Mercado de Coyoacán - Artesanías y comida'
-                    ]
-                },
-                'Polanco': {
-                    'restaurantes': [
-                        'Pujol - Restaurante de alta cocina mexicana',
-                        'Quintonil - Gastronomía mexicana contemporánea',
-                        'Sud 777 - Cocina internacional',
-                        'Biko - Fusión vasco-mexicana'
-                    ],
-                    'turísticos': [
-                        'Museo Soumaya - Colección de arte',
-                        'Museo Jumex - Arte contemporáneo',
-                        'Parque Lincoln - Área verde',
-                        'Avenida Presidente Masaryk - Zona comercial'
-                    ]
-                },
-                'Condesa': {
-                    'restaurantes': [
-                        'Lardo - Cocina mediterránea',
-                        'Máximo Bistrot Local - Cocina francesa',
-                        'Fonda Fina - Cocina mexicana tradicional',
-                        'El Califa - Tacos de pastor'
-                    ],
-                    'turísticos': [
-                        'Parque España - Área verde central',
-                        'Avenida Amsterdam - Andador turístico',
-                        'Mercado de Condesa - Alimentos y artesanías',
-                        'Plaza Popocatépetl - Punto de encuentro'
-                    ]
-                }
-            };
-            
-            return recommendations[location]?.[type] || ['No hay recomendaciones disponibles en este momento.'];
-        }
+        // Datos de Google Places (simulados) - MEJORADO
+        const googlePlacesData = {
+            'Roma Norte': {
+                restaurants: [
+                    {
+                        name: 'Contramar',
+                        type: 'Mariscos',
+                        description: 'Mariscos de alta calidad, famoso por su atún a la talla',
+                        rating: 4.7,
+                        mapsUrl: 'https://maps.app.goo.gl/example1',
+                        icon: '🐟'
+                    },
+                    {
+                        name: 'Rosetta',
+                        type: 'Italiana',
+                        description: 'Cocina italiana gourmet en un ambiente elegante',
+                        rating: 4.8,
+                        mapsUrl: 'https://maps.app.goo.gl/example2',
+                        icon: '🍝'
+                    },
+                    {
+                        name: 'Máximo Bistrot',
+                        type: 'Francesa',
+                        description: 'Cocina de mercado francesa con ingredientes locales',
+                        rating: 4.6,
+                        mapsUrl: 'https://maps.app.goo.gl/example3',
+                        icon: '🥐'
+                    },
+                    {
+                        name: 'El Parnita',
+                        type: 'Mexicana',
+                        description: 'Tacos y antojitos mexicanos contemporáneos',
+                        rating: 4.5,
+                        mapsUrl: 'https://maps.app.goo.gl/example4',
+                        icon: '🌮'
+                    }
+                ],
+                tourist: [
+                    {
+                        name: 'Museo Tamayo',
+                        type: 'Museo',
+                        description: 'Arte contemporáneo internacional y mexicano',
+                        rating: 4.6,
+                        mapsUrl: 'https://maps.app.goo.gl/example5',
+                        icon: '🖼️'
+                    },
+                    {
+                        name: 'Parque México',
+                        type: 'Parque',
+                        description: 'Área verde emblemática con fuentes y andadores',
+                        rating: 4.7,
+                        mapsUrl: 'https://maps.app.goo.gl/example6',
+                        icon: '🌿'
+                    },
+                    {
+                        name: 'Mercado Roma',
+                        type: 'Mercado',
+                        description: 'Gastronomía diversa en un mercado moderno',
+                        rating: 4.4,
+                        mapsUrl: 'https://maps.app.goo.gl/example7',
+                        icon: '🛒'
+                    },
+                    {
+                        name: 'Casa Lamm',
+                        type: 'Cultural',
+                        description: 'Centro cultural con galería y restaurante',
+                        rating: 4.5,
+                        mapsUrl: 'https://maps.app.goo.gl/example8',
+                        icon: '🏛️'
+                    }
+                ]
+            },
+            'Coyoacán': {
+                restaurants: [
+                    {
+                        name: 'Los Danzantes',
+                        type: 'Mexicana',
+                        description: 'Cocina mexicana moderna en un patio colonial',
+                        rating: 4.6,
+                        mapsUrl: 'https://maps.app.goo.gl/example9',
+                        icon: '🍸'
+                    },
+                    {
+                        name: 'Corazón de Maguey',
+                        type: 'Mexicana',
+                        description: 'Mezcal y comida tradicional mexicana',
+                        rating: 4.5,
+                        mapsUrl: 'https://maps.app.goo.gl/example10',
+                        icon: '🌵'
+                    },
+                    {
+                        name: 'El Morral',
+                        type: 'Mexicana',
+                        description: 'Cocina mexicana contemporánea',
+                        rating: 4.4,
+                        mapsUrl: 'https://maps.app.goo.gl/example11',
+                        icon: '🍴'
+                    },
+                    {
+                        name: 'Café El Jarocho',
+                        type: 'Cafetería',
+                        description: 'Café tradicional de Coyoacán desde 1953',
+                        rating: 4.7,
+                        mapsUrl: 'https://maps.app.goo.gl/example12',
+                        icon: '☕'
+                    }
+                ],
+                tourist: [
+                    {
+                        name: 'Museo Frida Kahlo',
+                        type: 'Museo',
+                        description: 'La Casa Azul, hogar de Frida Kahlo',
+                        rating: 4.8,
+                        mapsUrl: 'https://maps.app.goo.gl/igHdQ6AxfUv8ojDF7',
+                        icon: '🎨'
+                    },
+                    {
+                        name: 'Museo Diego Rivera',
+                        type: 'Museo',
+                        description: 'Museo dedicado a Diego Rivera',
+                        rating: 4.6,
+                        mapsUrl: 'https://maps.app.goo.gl/example14',
+                        icon: '🖌️'
+                    },
+                    {
+                        name: 'Jardín Centenario',
+                        type: 'Parque',
+                        description: 'Plaza principal de Coyoacán con fuentes',
+                        rating: 4.7,
+                        mapsUrl: 'https://maps.app.goo.gl/example15',
+                        icon: '⛲'
+                    },
+                    {
+                        name: 'Mercado de Coyoacán',
+                        type: 'Mercado',
+                        description: 'Artesanías y comida tradicional',
+                        rating: 4.5,
+                        mapsUrl: 'https://maps.app.goo.gl/example16',
+                        icon: '🛍️'
+                    }
+                ]
+            }
+        };
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
@@ -3141,6 +3389,14 @@
                 info.style.maxHeight = '0';
                 info.style.opacity = '0';
             });
+            
+            // Asegurar que cada tarjeta funcione individualmente
+            document.querySelectorAll('.attraction-toggle-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleAttractionInfo(this);
+                });
+            });
         }
 
         // Crear tarjeta de reseña para cuadrícula
@@ -3173,11 +3429,27 @@
             return reviewCard;
         }
 
-        // Función para expandir/contraer información de atracciones
+        // Función para expandir/contraer información de atracciones (MEJORADA - INDIVIDUAL)
         function toggleAttractionInfo(button) {
             const attractionCard = button.closest('.attraction-card');
             const attractionInfo = attractionCard.querySelector('.attraction-info');
             const icon = button.querySelector('i');
+            
+            // Cerrar todas las otras tarjetas
+            document.querySelectorAll('.attraction-info').forEach(otherInfo => {
+                if (otherInfo !== attractionInfo && otherInfo.classList.contains('expanded')) {
+                    otherInfo.classList.remove('expanded');
+                    otherInfo.style.maxHeight = '0';
+                    otherInfo.style.opacity = '0';
+                    otherInfo.style.marginTop = '0';
+                    
+                    const otherButton = otherInfo.closest('.attraction-card').querySelector('.attraction-toggle-btn');
+                    if (otherButton) {
+                        otherButton.classList.remove('expanded');
+                        otherButton.querySelector('i').className = 'fas fa-chevron-down';
+                    }
+                }
+            });
             
             // Alternar clase expanded
             attractionInfo.classList.toggle('expanded');
@@ -3420,7 +3692,7 @@
             window.open(`https://wa.me/5215511406820?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // CHATBOT FUNCTIONS - MEJORADO CON AGENTE IA
+        // CHATBOT FUNCTIONS - COMPLETAMENTE MEJORADO
         function initChatbot() {
             const chatbotToggle = document.getElementById('chatbotToggle');
             const chatbotWindow = document.getElementById('chatbotWindow');
@@ -3473,20 +3745,24 @@
             function showWelcomeMessage() {
                 const welcomeMessage = `¡Hola! Soy **NOVABOT**, tu asistente inteligente de Morada Luna. Estoy aquí para ayudarte con:\n\n• Reservas de alojamiento\n• Información sobre lugares turísticos\n• Recomendaciones personalizadas usando Google Places\n• Y mucho más\n\n¿En qué puedo asistirte hoy?`;
                 
-                const quickOptions = [
-                    "Quiero hacer una reserva",
-                    "Ver opciones de propiedades",
-                    "Lugares turísticos en CDMX",
-                    "Hablar con Agente IA",
-                    "Información sobre FIFA 2026"
-                ];
-
                 addMessageToChatbot(welcomeMessage, 'bot');
                 
                 // Agregar opciones rápidas después de un breve delay
                 setTimeout(() => {
-                    showQuickOptions(quickOptions);
+                    showMainOptions();
                 }, 800);
+            }
+
+            function showMainOptions() {
+                const options = [
+                    "Quiero hacer una reserva",
+                    "Lugares turísticos en CDMX",
+                    "Hablar con Agente IA (Google Places)",
+                    "Información sobre FIFA 2026",
+                    "Empezar de nuevo"
+                ];
+
+                showQuickOptions(options);
             }
 
             function addMessageToChatbot(message, sender) {
@@ -3560,6 +3836,58 @@
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             }
 
+            function showTouristOptions() {
+                const touristOptionsDiv = document.createElement('div');
+                touristOptionsDiv.className = 'tourist-options';
+                
+                const attractions = [
+                    { name: 'Centro Histórico', icon: '🏛️' },
+                    { name: 'Chapultepec', icon: '🌳' },
+                    { name: 'Frida Kahlo', icon: '🎨' },
+                    { name: 'La Roma', icon: '🍽️' },
+                    { name: 'Teotihuacán', icon: '🏺' },
+                    { name: 'Xochimilco', icon: '🚤' }
+                ];
+                
+                attractions.forEach(attraction => {
+                    const optionBtn = document.createElement('button');
+                    optionBtn.className = 'tourist-option';
+                    optionBtn.innerHTML = `
+                        <i>${attraction.icon}</i>
+                        <span>${attraction.name}</span>
+                    `;
+                    optionBtn.addEventListener('click', () => {
+                        addMessageToChatbot(attraction.name, 'user');
+                        showAttractionDetails(attraction.name.toLowerCase());
+                    });
+                    
+                    touristOptionsDiv.appendChild(optionBtn);
+                });
+                
+                chatbotMessages.appendChild(touristOptionsDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
+            function showAttractionDetails(attractionKey) {
+                const attraction = touristAttractions[attractionKey];
+                if (!attraction) return;
+                
+                const message = `${attraction.icon} *${attraction.name}*\n\n${attraction.description}\n\n¿Qué te gustaría hacer?`;
+                addMessageToChatbot(message, 'bot');
+                
+                setTimeout(() => {
+                    showQuickOptions([
+                        "Ver en Google Maps",
+                        "Buscar en Google",
+                        "Ver recomendaciones cercanas",
+                        "Volver a opciones"
+                    ]);
+                    
+                    // Guardar la atracción actual para referencia
+                    chatbotMessages.currentAttraction = attraction;
+                }, 500);
+            }
+
             function showPeopleOptions(type, max = 6) {
                 const peopleOptionsDiv = document.createElement('div');
                 peopleOptionsDiv.className = 'people-options';
@@ -3607,6 +3935,98 @@
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             }
 
+            function showGooglePlacesRecommendations(location, type = 'all') {
+                chatbotState.currentPlaceType = type;
+                
+                const placesData = googlePlacesData[location];
+                if (!placesData) {
+                    addMessageToChatbot(`Lo siento, no tengo recomendaciones disponibles para ${location} en este momento.`, 'bot');
+                    return;
+                }
+                
+                let places = [];
+                let title = '';
+                
+                if (type === 'restaurants' || type === 'all') {
+                    places = places.concat(placesData.restaurants);
+                }
+                if (type === 'tourist' || type === 'all') {
+                    places = places.concat(placesData.tourist);
+                }
+                
+                if (type === 'restaurants') {
+                    title = '🍽️ *Recomendaciones de Restaurantes*';
+                } else if (type === 'tourist') {
+                    title = '🏛️ *Lugares Turísticos Recomendados*';
+                } else {
+                    title = '📍 *Recomendaciones para tu Estancia*';
+                }
+                
+                addMessageToChatbot(`${title}\n\nEncontrados ${places.length} lugares recomendados en ${location}:`, 'bot');
+                
+                // Mostrar filtros
+                const filterDiv = document.createElement('div');
+                filterDiv.className = 'filter-options';
+                filterDiv.innerHTML = `
+                    <button class="filter-btn ${type === 'all' ? 'active' : ''}" data-filter="all">Todos</button>
+                    <button class="filter-btn ${type === 'restaurants' ? 'active' : ''}" data-filter="restaurants">Restaurantes</button>
+                    <button class="filter-btn ${type === 'tourist' ? 'active' : ''}" data-filter="tourist">Turísticos</button>
+                `;
+                
+                filterDiv.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const filterType = this.dataset.filter;
+                        chatbotMessages.removeChild(filterDiv);
+                        const recommendationsDiv = chatbotMessages.querySelector('.google-places-recommendations');
+                        if (recommendationsDiv) {
+                            chatbotMessages.removeChild(recommendationsDiv);
+                        }
+                        showGooglePlacesRecommendations(location, filterType);
+                    });
+                });
+                
+                chatbotMessages.appendChild(filterDiv);
+                
+                // Mostrar recomendaciones
+                const recommendationsDiv = document.createElement('div');
+                recommendationsDiv.className = 'google-places-recommendations';
+                
+                places.forEach(place => {
+                    const placeDiv = document.createElement('div');
+                    placeDiv.className = 'place-recommendation';
+                    
+                    // Crear estrellas
+                    let stars = '';
+                    for (let i = 0; i < Math.floor(place.rating); i++) {
+                        stars += '★';
+                    }
+                    
+                    placeDiv.innerHTML = `
+                        <div class="place-info">
+                            <div class="place-name">${place.icon} ${place.name}</div>
+                            <div class="place-type">
+                                <span>${place.type}</span>
+                                <span style="color: #FFD700;">${stars} ${place.rating}</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: #666; margin-top: 0.3rem;">${place.description}</div>
+                        </div>
+                        <div class="place-actions">
+                            <button class="place-action-btn" title="Ver en Maps" onclick="window.open('${place.mapsUrl}', '_blank')">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </button>
+                            <button class="place-action-btn" title="Cómo llegar" onclick="openGoogleMapsDirections('${place.name}', '${location}')">
+                                <i class="fas fa-directions"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    recommendationsDiv.appendChild(placeDiv);
+                });
+                
+                chatbotMessages.appendChild(recommendationsDiv);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
             function showTypingIndicator() {
                 const typingDiv = document.createElement('div');
                 typingDiv.className = 'chatbot-typing';
@@ -3644,9 +4064,9 @@
                     
                     calendarPopup.innerHTML = `
                         <div class="calendar-header">
-                            <button class="calendar-nav" onclick="prevMonth()">&lt;</button>
+                            <button class="calendar-nav prev">&lt;</button>
                             <h4>${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}</h4>
-                            <button class="calendar-nav" onclick="nextMonth()">&gt;</button>
+                            <button class="calendar-nav next">&gt;</button>
                         </div>
                         <div class="calendar-grid">
                             <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
@@ -3711,21 +4131,18 @@
                         
                         calendarGrid.appendChild(dayDiv);
                     }
+                    
+                    // Agregar event listeners para navegación
+                    calendarPopup.querySelector('.prev').addEventListener('click', () => {
+                        currentDate.setMonth(currentDate.getMonth() - 1);
+                        renderCalendar();
+                    });
+                    
+                    calendarPopup.querySelector('.next').addEventListener('click', () => {
+                        currentDate.setMonth(currentDate.getMonth() + 1);
+                        renderCalendar();
+                    });
                 }
-                
-                function prevMonth() {
-                    currentDate.setMonth(currentDate.getMonth() - 1);
-                    renderCalendar();
-                }
-                
-                function nextMonth() {
-                    currentDate.setMonth(currentDate.getMonth() + 1);
-                    renderCalendar();
-                }
-                
-                // Agregar funciones al scope global temporalmente
-                window.prevMonth = prevMonth;
-                window.nextMonth = nextMonth;
                 
                 renderCalendar();
                 
@@ -3754,6 +4171,16 @@
                     
                     const lowerMessage = userMessage.toLowerCase();
                     
+                    // Botón "Empezar de nuevo"
+                    if (lowerMessage.includes('empezar de nuevo') || lowerMessage.includes('reiniciar')) {
+                        resetChatbot();
+                        addMessageToChatbot('¡Perfecto! He reiniciado el proceso. ¿En qué puedo ayudarte ahora?', 'bot');
+                        setTimeout(() => {
+                            showMainOptions();
+                        }, 500);
+                        return;
+                    }
+                    
                     // Si está en modo Agente IA
                     if (chatbotState.aiMode) {
                         processAIAgentResponse(userMessage);
@@ -3766,13 +4193,12 @@
                             if (lowerMessage.includes('reserva') || lowerMessage.includes('quiero hacer')) {
                                 chatbotState.step = 1;
                                 addMessageToChatbot('¡Excelente! Para comenzar con tu reserva, necesito algunos datos. ¿Cuál es tu nombre?', 'bot');
-                            } else if (lowerMessage.includes('propiedad') || lowerMessage.includes('opciones')) {
-                                addMessageToChatbot('Tenemos 4 propiedades disponibles:\n\n1. Morada Luna Condesa\n2. Morada Luna Roma Norte\n3. Morada Luna Polanco\n4. Morada Luna Coyoacán\n\n¿Te gustaría hacer una reserva en alguna de estas propiedades?', 'bot');
-                                chatbotState.step = 0;
                             } else if (lowerMessage.includes('lugares') || lowerMessage.includes('turísticos') || lowerMessage.includes('cdmx')) {
-                                addMessageToChatbot('¡Excelente! En CDMX tenemos muchos lugares increíbles para visitar:\n\n• Centro Histórico\n• Parque de Chapultepec\n• Museo Frida Kahlo\n• La Roma y La Condesa\n• Teotihuacán\n• Xochimilco\n\n¿Sobre cuál lugar te gustaría más información?', 'bot');
-                                chatbotState.step = 0;
-                            } else if (lowerMessage.includes('agente') || lowerMessage.includes('ia')) {
+                                addMessageToChatbot('¡Excelente! Te mostraré los principales lugares turísticos de CDMX. Selecciona uno para más información:', 'bot');
+                                setTimeout(() => {
+                                    showTouristOptions();
+                                }, 500);
+                            } else if (lowerMessage.includes('agente') || lowerMessage.includes('ia') || lowerMessage.includes('google')) {
                                 chatbotState.aiMode = true;
                                 addMessageToChatbot('🔍 **Modo Agente IA Activado**\n\n¡Hola! Soy tu Agente IA mejorado con integración de Google Places. Puedo ayudarte con:\n\n• Recomendaciones de restaurantes cercanos\n• Lugares turísticos cerca de tu alojamiento\n• Información detallada sobre atracciones\n• Sugerencias personalizadas\n\n¿En qué propiedad de Morada Luna te estarás hospedando o qué ubicación te interesa?', 'bot');
                                 setTimeout(() => {
@@ -3782,30 +4208,8 @@
                                 addMessageToChatbot('¡FIFA 2026 en México! 🏆⚽\n\nMorada Luna está preparado para recibir a los aficionados del mundial. Tenemos propiedades cerca del Estadio Azteca con todas las comodidades para disfrutar del torneo.\n\n¿Te gustaría información específica sobre alojamiento para el mundial?', 'bot');
                                 showQuickOptions(["Sí, información FIFA", "Quiero hacer reserva normal"]);
                             } else {
-                                // Buscar si pregunta por algún lugar turístico
-                                let foundAttraction = false;
-                                for (const key in touristAttractions) {
-                                    if (lowerMessage.includes(key)) {
-                                        const attraction = touristAttractions[key];
-                                        const message = `${attraction.name}:\n${attraction.description}\n\n¿Te gustaría:\n1. Ver en Google Maps\n2. Buscar más información en Google\n3. Ver recomendaciones cercanas`;
-                                        addMessageToChatbot(message, 'bot');
-                                        showQuickOptions(["Ver en Maps", "Buscar en Google", "Recomendaciones cercanas"]);
-                                        foundAttraction = true;
-                                        chatbotMessages.lastAttraction = attraction;
-                                        break;
-                                    }
-                                }
-                                
-                                if (!foundAttraction) {
-                                    addMessageToChatbot('Para ayudarte mejor, por favor selecciona una de las opciones o dime qué necesitas específicamente.', 'bot');
-                                    showQuickOptions([
-                                        "Quiero hacer una reserva",
-                                        "Ver opciones de propiedades",
-                                        "Lugares turísticos en CDMX",
-                                        "Hablar con Agente IA",
-                                        "Información sobre FIFA 2026"
-                                    ]);
-                                }
+                                addMessageToChatbot('Para ayudarte mejor, por favor selecciona una de las opciones:', 'bot');
+                                showMainOptions();
                             }
                             break;
                             
@@ -3881,24 +4285,7 @@
                                     chatbotWindow.style.display = 'none';
                                     
                                     // Resetear el estado del chatbot
-                                    chatbotState = {
-                                        step: 0,
-                                        reservationData: {
-                                            firstName: '',
-                                            lastName: '',
-                                            location: '',
-                                            adults: '',
-                                            children: '',
-                                            checkIn: '',
-                                            checkOut: ''
-                                        },
-                                        selectedOptions: {
-                                            location: null,
-                                            adults: null,
-                                            children: null
-                                        },
-                                        aiMode: false
-                                    };
+                                    resetChatbot();
                                 }, 2000);
                             } else {
                                 addMessageToChatbot('¿Qué dato te gustaría corregir?', 'bot');
@@ -3907,7 +4294,8 @@
                                     "Apellido",
                                     "Ubicación",
                                     "Número de personas",
-                                    "Fechas"
+                                    "Fechas",
+                                    "Empezar de nuevo"
                                 ]);
                             }
                             break;
@@ -3946,34 +4334,33 @@
                                 setTimeout(() => {
                                     showCalendarPopup(true);
                                 }, 800);
-                            } else if (lowerMessage.includes('maps') || lowerMessage.includes('google') || lowerMessage.includes('recomendaciones')) {
+                            } else if (lowerMessage.includes('maps') || lowerMessage.includes('google') || lowerMessage.includes('recomendaciones') || lowerMessage.includes('volver')) {
                                 // Manejar opciones de lugares turísticos
-                                if (chatbotMessages.lastAttraction) {
-                                    const attraction = chatbotMessages.lastAttraction;
-                                    
-                                    if (lowerMessage.includes('maps')) {
-                                        window.open(attraction.mapsUrl, '_blank');
-                                        addMessageToChatbot('¡Perfecto! He abierto Google Maps con la ubicación del lugar. ¿Necesitas algo más?', 'bot');
-                                    } else if (lowerMessage.includes('google')) {
-                                        searchGoogle(attraction.googleSearch);
-                                        addMessageToChatbot('¡Perfecto! He abierto Google con la búsqueda del lugar turístico. ¿Necesitas algo más?', 'bot');
-                                    } else if (lowerMessage.includes('recomendaciones')) {
-                                        addMessageToChatbot('Para darte recomendaciones personalizadas de lugares cercanos, necesito saber en qué propiedad de Morada Luna te hospedarás. ¿Podrías seleccionar una ubicación?', 'bot');
-                                        setTimeout(() => {
-                                            showVisualOptions(["Roma Norte", "Coyoacán", "Polanco", "Condesa"], 'location');
-                                        }, 500);
-                                        chatbotState.aiMode = true;
-                                    }
+                                if (lowerMessage.includes('maps') && chatbotMessages.currentAttraction) {
+                                    window.open(chatbotMessages.currentAttraction.mapsUrl, '_blank');
+                                    addMessageToChatbot('¡Perfecto! He abierto Google Maps con la ubicación del lugar. ¿Necesitas algo más?', 'bot');
+                                } else if (lowerMessage.includes('google') && chatbotMessages.currentAttraction) {
+                                    searchGoogle(chatbotMessages.currentAttraction.googleSearch);
+                                    addMessageToChatbot('¡Perfecto! He abierto Google con la búsqueda del lugar turístico. ¿Necesitas algo más?', 'bot');
+                                } else if (lowerMessage.includes('recomendaciones')) {
+                                    addMessageToChatbot('Para darte recomendaciones personalizadas de lugares cercanos, necesito saber en qué propiedad de Morada Luna te hospedarás. ¿Podrías seleccionar una ubicación?', 'bot');
+                                    setTimeout(() => {
+                                        showVisualOptions(["Roma Norte", "Coyoacán", "Polanco", "Condesa"], 'location');
+                                    }, 500);
+                                    chatbotState.aiMode = true;
+                                } else if (lowerMessage.includes('volver')) {
+                                    addMessageToChatbot('Te muestro nuevamente los lugares turísticos:', 'bot');
+                                    setTimeout(() => {
+                                        showTouristOptions();
+                                    }, 500);
                                 }
                                 chatbotState.step = 0;
-                                showQuickOptions([
-                                    "Quiero hacer una reserva",
-                                    "Ver otro lugar turístico",
-                                    "Hablar con Agente IA",
-                                    "Información sobre FIFA 2026"
-                                ]);
+                                setTimeout(() => {
+                                    showMainOptions();
+                                }, 1000);
                             } else {
                                 addMessageToChatbot('No entiendo. Por favor, selecciona una de las opciones o dime específicamente qué quieres corregir.', 'bot');
+                                showMainOptions();
                             }
                             break;
                     }
@@ -3991,76 +4378,67 @@
                 if (['roma norte', 'coyoacán', 'polanco', 'condesa'].includes(lowerMessage)) {
                     chatbotState.reservationData.location = userMessage;
                     
-                    addMessageToChatbot(`Excelente, ${userMessage}. ¿Qué tipo de recomendaciones te gustaría?\n\n1. Restaurantes cercanos\n2. Lugares turísticos cerca\n3. Ambos`, 'bot');
-                    showQuickOptions(["Restaurantes cercanos", "Lugares turísticos cerca", "Ambos"]);
+                    addMessageToChatbot(`📍 *${userMessage}*\n\nTe mostraré recomendaciones personalizadas de Google Places para esta ubicación. ¿Qué tipo de lugares te interesan?`, 'bot');
+                    showQuickOptions(["Restaurantes", "Lugares turísticos", "Todo", "Cambiar ubicación"]);
                     
                 } else if (lowerMessage.includes('restaurantes')) {
                     // Mostrar recomendaciones de restaurantes
-                    const recommendations = getGooglePlacesRecommendations(chatbotState.reservationData.location, 'restaurantes');
+                    showGooglePlacesRecommendations(chatbotState.reservationData.location, 'restaurants');
                     
-                    let message = `🍽️ **Recomendaciones de restaurantes cerca de ${chatbotState.reservationData.location}:**\n\n`;
-                    recommendations.forEach((rec, index) => {
-                        message += `${index + 1}. ${rec}\n`;
+                    // Agregar botón de "Empezar de nuevo"
+                    const resetBtn = document.createElement('button');
+                    resetBtn.className = 'reset-chatbot-btn';
+                    resetBtn.innerHTML = '<i class="fas fa-redo"></i> Empezar de Nuevo';
+                    resetBtn.addEventListener('click', () => {
+                        resetChatbot();
+                        addMessageToChatbot('¡Proceso reiniciado! ¿En qué más puedo ayudarte?', 'bot');
+                        showMainOptions();
                     });
                     
-                    message += `\n¿Te gustaría también ver lugares turísticos cercanos o prefieres volver al menú principal?`;
-                    
-                    addMessageToChatbot(message, 'bot');
-                    showQuickOptions(["Ver lugares turísticos", "Menú principal"]);
+                    setTimeout(() => {
+                        chatbotMessages.appendChild(resetBtn);
+                        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                    }, 500);
                     
                 } else if (lowerMessage.includes('turísticos') || lowerMessage.includes('lugares')) {
                     // Mostrar recomendaciones de lugares turísticos
-                    const recommendations = getGooglePlacesRecommendations(chatbotState.reservationData.location, 'turísticos');
+                    showGooglePlacesRecommendations(chatbotState.reservationData.location, 'tourist');
                     
-                    let message = `🏛️ **Lugares turísticos cerca de ${chatbotState.reservationData.location}:**\n\n`;
-                    recommendations.forEach((rec, index) => {
-                        message += `${index + 1}. ${rec}\n`;
+                    // Agregar botón de "Empezar de nuevo"
+                    const resetBtn = document.createElement('button');
+                    resetBtn.className = 'reset-chatbot-btn';
+                    resetBtn.innerHTML = '<i class="fas fa-redo"></i> Empezar de Nuevo';
+                    resetBtn.addEventListener('click', () => {
+                        resetChatbot();
+                        addMessageToChatbot('¡Proceso reiniciado! ¿En qué más puedo ayudarte?', 'bot');
+                        showMainOptions();
                     });
                     
-                    message += `\n¿Te gustaría también ver restaurantes cercanos o prefieres volver al menú principal?`;
+                    setTimeout(() => {
+                        chatbotMessages.appendChild(resetBtn);
+                        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                    }, 500);
                     
-                    addMessageToChatbot(message, 'bot');
-                    showQuickOptions(["Ver restaurantes", "Menú principal"]);
+                } else if (lowerMessage.includes('todo') || lowerMessage.includes('ambos')) {
+                    // Mostrar todas las recomendaciones
+                    showGooglePlacesRecommendations(chatbotState.reservationData.location, 'all');
                     
-                } else if (lowerMessage.includes('ambos')) {
-                    // Mostrar ambas recomendaciones
-                    const restaurantRecs = getGooglePlacesRecommendations(chatbotState.reservationData.location, 'restaurantes');
-                    const touristRecs = getGooglePlacesRecommendations(chatbotState.reservationData.location, 'turísticos');
-                    
-                    let message = `📍 **Recomendaciones personalizadas para ${chatbotState.reservationData.location}:**\n\n`;
-                    message += `🍽️ **Restaurantes recomendados:**\n`;
-                    restaurantRecs.forEach((rec, index) => {
-                        message += `${index + 1}. ${rec}\n`;
+                    // Agregar botón de "Empezar de nuevo"
+                    const resetBtn = document.createElement('button');
+                    resetBtn.className = 'reset-chatbot-btn';
+                    resetBtn.innerHTML = '<i class="fas fa-redo"></i> Empezar de Nuevo';
+                    resetBtn.addEventListener('click', () => {
+                        resetChatbot();
+                        addMessageToChatbot('¡Proceso reiniciado! ¿En qué más puedo ayudarte?', 'bot');
+                        showMainOptions();
                     });
                     
-                    message += `\n🏛️ **Lugares turísticos recomendados:**\n`;
-                    touristRecs.forEach((rec, index) => {
-                        message += `${index + 1}. ${rec}\n`;
-                    });
+                    setTimeout(() => {
+                        chatbotMessages.appendChild(resetBtn);
+                        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                    }, 500);
                     
-                    message += `\n¿Hay algo más en lo que pueda ayudarte?`;
-                    
-                    addMessageToChatbot(message, 'bot');
-                    showQuickOptions(["Hacer una reserva", "Ver otra ubicación", "Menú principal"]);
-                    
-                } else if (lowerMessage.includes('menú principal') || lowerMessage.includes('volver')) {
-                    chatbotState.aiMode = false;
-                    chatbotState.step = 0;
-                    addMessageToChatbot('Volviendo al menú principal. ¿En qué más puedo ayudarte?', 'bot');
-                    showQuickOptions([
-                        "Quiero hacer una reserva",
-                        "Ver opciones de propiedades",
-                        "Lugares turísticos en CDMX",
-                        "Hablar con Agente IA",
-                        "Información sobre FIFA 2026"
-                    ]);
-                    
-                } else if (lowerMessage.includes('reserva')) {
-                    chatbotState.aiMode = false;
-                    chatbotState.step = 1;
-                    addMessageToChatbot('¡Excelente! Para comenzar con tu reserva, necesito algunos datos. ¿Cuál es tu nombre?', 'bot');
-                    
-                } else if (lowerMessage.includes('ubicación') || lowerMessage.includes('otra ubicación')) {
+                } else if (lowerMessage.includes('cambiar ubicación') || lowerMessage.includes('otra ubicación')) {
                     chatbotState.reservationData.location = '';
                     addMessageToChatbot('¿En qué otra ubicación te gustaría recomendaciones?', 'bot');
                     setTimeout(() => {
@@ -4068,11 +4446,45 @@
                     }, 500);
                     
                 } else {
-                    addMessageToChatbot('Como Agente IA, puedo ayudarte con recomendaciones personalizadas. Por favor, selecciona una opción o dime específicamente qué necesitas.', 'bot');
-                    showQuickOptions(["Restaurantes cercanos", "Lugares turísticos cerca", "Menú principal"]);
+                    addMessageToChatbot('Como Agente IA, puedo ayudarte con recomendaciones personalizadas. Por favor, selecciona una opción:', 'bot');
+                    showQuickOptions(["Restaurantes", "Lugares turísticos", "Todo", "Cambiar ubicación", "Empezar de nuevo"]);
                 }
             }
+
+            // Función para resetear el chatbot
+            function resetChatbot() {
+                chatbotState = {
+                    step: 0,
+                    reservationData: {
+                        firstName: '',
+                        lastName: '',
+                        location: '',
+                        adults: '',
+                        children: '',
+                        checkIn: '',
+                        checkOut: ''
+                    },
+                    selectedOptions: {
+                        location: null,
+                        adults: null,
+                        children: null
+                    },
+                    aiMode: false,
+                    currentPlaceType: 'all'
+                };
+                
+                // Limpiar mensajes
+                chatbotMessages.innerHTML = '';
+            }
         }
+
+        // Función global para abrir Google Maps con direcciones
+        window.openGoogleMapsDirections = function(placeName, location) {
+            const origin = encodeURIComponent(location + ', Ciudad de México');
+            const destination = encodeURIComponent(placeName + ', Ciudad de México');
+            const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=driving`;
+            window.open(url, '_blank');
+        };
     </script>
 </body>
 </html>
